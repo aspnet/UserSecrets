@@ -8,7 +8,7 @@ using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime.Common.CommandLine;
 using Newtonsoft.Json.Linq;
 
-namespace SecretManager
+namespace Microsoft.Framework.ConfigurationModel.SecretManager
 {
     public class Program
     {

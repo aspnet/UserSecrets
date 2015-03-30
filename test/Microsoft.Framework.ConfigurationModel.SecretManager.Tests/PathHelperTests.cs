@@ -6,7 +6,7 @@ using System.IO;
 using Microsoft.Framework.ConfigurationModel.UserSecrets;
 using Xunit;
 
-namespace SecretManager.Tests
+namespace Microsoft.Framework.ConfigurationModel.SecretManager.Tests
 {
     public class PathHelperTests
     {

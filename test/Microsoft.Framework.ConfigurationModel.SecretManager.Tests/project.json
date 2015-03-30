@@ -1,6 +1,6 @@
 ﻿{
   "dependencies": {
-    "SecretManager": "1.0.0-*",
+    "Microsoft.Framework.ConfigurationModel.SecretManager": "1.0.0-*",
     "xunit.runner.aspnet": "2.0.0-aspnet-*"
   },
   "frameworks": {

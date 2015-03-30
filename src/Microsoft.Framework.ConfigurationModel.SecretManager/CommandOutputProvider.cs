@@ -3,7 +3,7 @@
 
 using Microsoft.Framework.Logging;
 
-namespace SecretManager
+namespace Microsoft.Framework.ConfigurationModel.SecretManager
 {
     public class CommandOutputProvider : ILoggerProvider
     {
