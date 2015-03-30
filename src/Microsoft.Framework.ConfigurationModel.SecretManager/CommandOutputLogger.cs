@@ -5,7 +5,7 @@ using System;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime.Common.CommandLine;
 
-namespace SecretManager
+namespace Microsoft.Framework.ConfigurationModel.SecretManager
 {
     /// <summary>
     /// Logger to print formatted command output.

@@ -3,4 +3,4 @@
 
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("SecretManager.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Framework.ConfigurationModel.SecretManager.Tests")]

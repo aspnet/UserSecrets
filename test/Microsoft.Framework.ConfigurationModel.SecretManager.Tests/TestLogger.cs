@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Framework.Logging;
 
-namespace SecretManager.Tests
+namespace Microsoft.Framework.ConfigurationModel.SecretManager.Tests
 {
     public class TestLogger : ILogger
     {
