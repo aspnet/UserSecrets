@@ -24,7 +24,7 @@ namespace SecretManager.Tests
 
         public List<string> Messages { get; set; } = new List<string>();
 
-        public IDisposable BeginScope(object state)
+        public IDisposable BeginScopeImpl(object state)
         {
             throw new NotImplementedException();
         }

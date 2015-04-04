@@ -19,7 +19,7 @@ namespace SecretManager
             _provider = commandOutputProvider;
         }
 
-        public IDisposable BeginScope(object state)
+        public IDisposable BeginScopeImpl(object state)
         {
             throw new NotImplementedException();
         }
