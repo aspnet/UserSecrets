@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Microsoft Open Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.IO;
 using Microsoft.Framework.ConfigurationModel.UserSecrets;
 using Microsoft.Framework.Internal;
 using Microsoft.Framework.Runtime;
@@ -20,14 +19,7 @@ namespace Microsoft.Framework.ConfigurationModel
         {
             var appEnv = (IApplicationEnvironment)CallContextServiceLocator.Locator.ServiceProvider.GetService(typeof(IApplicationEnvironment));
             var secretPath = PathHelper.GetSecretsPath(appEnv.ApplicationBasePath);
-
-            if (!File.Exists(secretPath))
-            {
-                // TODO: Use the optional config add after that's available?.
-                return configuration;
-            }
-
-            return configuration.AddJsonFile(secretPath);
+            return configuration.AddJsonFile(secretPath, optional: true);
         }
 
         /// <summary>
@@ -38,14 +30,7 @@ namespace Microsoft.Framework.ConfigurationModel
         public static IConfigurationSourceRoot AddUserSecrets([NotNull]this IConfigurationSourceRoot configuration, [NotNull]string userSecretsId)
         {
             var secretPath = PathHelper.GetSecretsPathFromSecretsId(userSecretsId);
-
-            if (!File.Exists(secretPath))
-            {
-                // TODO: Use the optional config add after that's available?.
-                return configuration;
-            }
-
-            return configuration.AddJsonFile(secretPath);
+            return configuration.AddJsonFile(secretPath, optional: true);
         }
     }
 }

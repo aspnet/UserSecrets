@@ -10,7 +10,6 @@
     "commands": {
         "user-secret": "SecretManager"
     },
-    "userSecretsId":  "testuserSecretsId",
     "frameworks": {
         "dnx451": { },
         "dnxcore50": {
