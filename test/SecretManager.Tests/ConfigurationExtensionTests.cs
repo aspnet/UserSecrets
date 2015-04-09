@@ -28,13 +28,7 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
             var backupServiceProvider = CallContextServiceLocator.Locator.ServiceProvider;
             try
             {
-                CallContextServiceLocator.Locator.ServiceProvider = new ServiceCollection()
-                    .AddInstance<IApplicationEnvironment>(new MyApplicationEnvironment(appBasePath: projectPath))
-                    .BuildServiceProvider();
-
-                var configuration = new Configuration()
-                                    .AddUserSecrets();
-
+                var configuration = new Configuration(projectPath).AddUserSecrets();
                 Assert.Equal(null, configuration["Facebook:AppSecret"]);
             }
             finally
@@ -59,12 +53,7 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
             var backupServiceProvider = CallContextServiceLocator.Locator.ServiceProvider;
             try
             {
-                CallContextServiceLocator.Locator.ServiceProvider = new ServiceCollection()
-                    .AddInstance<IApplicationEnvironment>(new MyApplicationEnvironment(appBasePath: projectPath))
-                    .BuildServiceProvider();
-
-                var configuration = new Configuration()
-                                    .AddUserSecrets();
+                var configuration = new Configuration(projectPath).AddUserSecrets();
 
                 Assert.Equal("value1", configuration["Facebook:AppSecret"]);
             }

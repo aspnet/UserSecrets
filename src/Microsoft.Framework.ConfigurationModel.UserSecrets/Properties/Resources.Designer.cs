@@ -27,6 +27,22 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets
         }
 
         /// <summary>
+        /// Unable to resolve path '{0}'; construct this {1} with a non-null {2}.
+        /// </summary>
+        internal static string Error_MissingBasePath
+        {
+            get { return GetString("Error_MissingBasePath"); }
+        }
+
+        /// <summary>
+        /// Unable to resolve path '{0}'; construct this {1} with a non-null {2}.
+        /// </summary>
+        internal static string FormatError_MissingBasePath(object p0, object p1, object p2)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("Error_MissingBasePath"), p0, p1, p2);
+        }
+
+        /// <summary>
         /// Unable to locate a project.json at '{0}'.
         /// </summary>
         internal static string Error_Missing_Project_Json
