@@ -2,10 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Runtime.Versioning;
-using Microsoft.Framework.DependencyInjection;
-using Microsoft.Framework.Runtime;
-using Microsoft.Framework.Runtime.Infrastructure;
 using SecretManager;
 using SecretManager.Tests;
 using Xunit;
@@ -65,55 +61,6 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
 
             Assert.Equal("value1", configuration["Facebook:AppSecret"]);
             UserSecretHelper.DeleteTempSecretProject(projectPath);
-        }
-
-        private class MyApplicationEnvironment : IApplicationEnvironment
-        {
-            private readonly string _appBasePath;
-            public MyApplicationEnvironment(string appBasePath)
-            {
-                _appBasePath = appBasePath;
-            }
-
-            public string ApplicationBasePath
-            {
-                get
-                {
-                    return _appBasePath;
-                }
-            }
-
-            public string ApplicationName
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public string Configuration
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public FrameworkName RuntimeFramework
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public string Version
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-            }
         }
     }
 }
