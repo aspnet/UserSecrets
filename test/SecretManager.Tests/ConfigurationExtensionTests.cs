@@ -25,16 +25,9 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
         public void AddUserSecrets_Does_Not_Fail_On_Non_Existing_File()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var backupServiceProvider = CallContextServiceLocator.Locator.ServiceProvider;
-            try
-            {
-                var configuration = new Configuration(projectPath).AddUserSecrets();
-                Assert.Equal(null, configuration["Facebook:AppSecret"]);
-            }
-            finally
-            {
-                CallContextServiceLocator.Locator.ServiceProvider = backupServiceProvider;
-            }
+
+            var configuration = new Configuration(projectPath).AddUserSecrets();
+            Assert.Equal(null, configuration["Facebook:AppSecret"]);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
         }
@@ -50,17 +43,8 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
 
             secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
-            var backupServiceProvider = CallContextServiceLocator.Locator.ServiceProvider;
-            try
-            {
-                var configuration = new Configuration(projectPath).AddUserSecrets();
-
-                Assert.Equal("value1", configuration["Facebook:AppSecret"]);
-            }
-            finally
-            {
-                CallContextServiceLocator.Locator.ServiceProvider = backupServiceProvider;
-            }
+            var configuration = new Configuration(projectPath).AddUserSecrets();
+            Assert.Equal("value1", configuration["Facebook:AppSecret"]);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
         }
