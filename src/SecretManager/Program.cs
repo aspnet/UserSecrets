@@ -199,7 +199,7 @@ namespace SecretManager
             {
                 foreach (var secret in secrets)
                 {
-                    Logger.LogInformation(Resources.Message_Secret_Value_Format, secret.Key, secret.Value);
+                    Logger.LogInformation(Resources.FormatMessage_Secret_Value_Format(secret.Key, secret.Value));
                 }
             }
         }
