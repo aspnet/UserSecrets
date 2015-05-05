@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Framework.Logging;
+using Microsoft.Framework.Runtime;
 
 namespace SecretManager.Tests
 {
@@ -11,15 +12,15 @@ namespace SecretManager.Tests
     {
         private readonly CommandOutputLogger _commandOutputLogger;
 
-        public TestLogger(bool verbose = false)
+        public TestLogger(IRuntimeEnvironment runtimeEnv, bool verbose = false)
         {
-            var commandOutputProvider = new CommandOutputProvider();
+            var commandOutputProvider = new CommandOutputProvider(runtimeEnv);
             if (verbose)
             {
                 commandOutputProvider.LogLevel = LogLevel.Verbose;
             }
 
-            _commandOutputLogger = new CommandOutputLogger(commandOutputProvider);
+            _commandOutputLogger = (CommandOutputLogger)commandOutputProvider.CreateLogger("");
         }
 
         public List<string> Messages { get; set; } = new List<string>();

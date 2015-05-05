@@ -1,5 +1,6 @@
 ﻿{
     "dependencies": {
+        "Microsoft.Framework.Runtime.Abstractions": "1.0.0-*",
         "SecretManager": "1.0.0-*",
         "xunit.runner.aspnet": "2.0.0-aspnet-*"
     },

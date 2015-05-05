@@ -13,10 +13,12 @@ namespace SecretManager
     public class CommandOutputLogger : ILogger
     {
         private readonly CommandOutputProvider _provider;
+        private readonly AnsiConsole _outConsole;
 
-        public CommandOutputLogger(CommandOutputProvider commandOutputProvider)
+        public CommandOutputLogger(CommandOutputProvider commandOutputProvider, bool useConsoleColor)
         {
             _provider = commandOutputProvider;
+            _outConsole = AnsiConsole.GetOutput(useConsoleColor);
         }
 
         public IDisposable BeginScopeImpl(object state)
@@ -38,7 +40,7 @@ namespace SecretManager
         {
             if (IsEnabled(logLevel))
             {
-                AnsiConsole.Output.WriteLine(string.Format("{0}: {1}", Caption(logLevel), formatter(state, exception)));
+                _outConsole.WriteLine(string.Format("{0}: {1}", Caption(logLevel), formatter(state, exception)));
             }
         }
 
