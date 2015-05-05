@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using Microsoft.Framework.ConfigurationModel.UserSecrets;
 using Microsoft.Framework.Logging;
+using Microsoft.Framework.Runtime;
 using Microsoft.Framework.Runtime.Common.CommandLine;
 using Newtonsoft.Json.Linq;
 
@@ -15,10 +16,10 @@ namespace SecretManager
         private ILogger _logger;
         private CommandOutputProvider _loggerProvider;
 
-        public Program()
+        public Program(IRuntimeEnvironment runtimeEnv)
         {
             var loggerFactory = new LoggerFactory();
-            CommandOutputProvider = new CommandOutputProvider();
+            CommandOutputProvider = new CommandOutputProvider(runtimeEnv);
             loggerFactory.AddProvider(CommandOutputProvider);
             Logger = loggerFactory.CreateLogger<Program>();
         }
