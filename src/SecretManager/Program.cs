@@ -31,7 +31,7 @@ namespace SecretManager
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 _logger = value;
@@ -45,7 +45,7 @@ namespace SecretManager
             {
                 if (value == null)
                 {
-                    throw new ArgumentNullException("value");
+                    throw new ArgumentNullException(nameof(value));
                 }
 
                 _loggerProvider = value;
