@@ -7,6 +7,7 @@ using Microsoft.Framework.ConfigurationModel.UserSecrets;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
 using Microsoft.Framework.Runtime.Common.CommandLine;
+using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace SecretManager
@@ -27,13 +28,9 @@ namespace SecretManager
         public ILogger Logger
         {
             get { return _logger; }
+            [param: NotNull]
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-
                 _logger = value;
             }
         }
@@ -41,13 +38,9 @@ namespace SecretManager
         public CommandOutputProvider CommandOutputProvider
         {
             get { return _loggerProvider; }
+            [param: NotNull]
             set
             {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-
                 _loggerProvider = value;
             }
         }
