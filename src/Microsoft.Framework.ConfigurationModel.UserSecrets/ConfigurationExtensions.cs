@@ -14,13 +14,13 @@ namespace Microsoft.Framework.ConfigurationModel
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IConfigurationBuilder AddUserSecrets([NotNull]this IConfigurationBuilder configuration)
+        public static IConfigurationSourceRoot AddUserSecrets([NotNull]this IConfigurationSourceRoot configuration)
         {
             if (string.IsNullOrEmpty(configuration.BasePath))
             {
                 throw new InvalidOperationException(Resources.FormatError_MissingBasePath(
                     configuration.BasePath,
-                    typeof(IConfigurationBuilder).Name,
+                    typeof(IConfigurationSourceRoot).Name,
                     nameof(configuration.BasePath)));
             }
 
@@ -33,7 +33,7 @@ namespace Microsoft.Framework.ConfigurationModel
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IConfigurationBuilder AddUserSecrets([NotNull]this IConfigurationBuilder configuration, [NotNull]string userSecretsId)
+        public static IConfigurationSourceRoot AddUserSecrets([NotNull]this IConfigurationSourceRoot configuration, [NotNull]string userSecretsId)
         {
             var secretPath = PathHelper.GetSecretsPathFromSecretsId(userSecretsId);
             return configuration.AddJsonFile(secretPath, optional: true);
