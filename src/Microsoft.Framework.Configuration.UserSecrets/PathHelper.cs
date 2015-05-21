@@ -6,7 +6,7 @@ using System.IO;
 using Microsoft.Framework.Internal;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Framework.ConfigurationModel.UserSecrets
+namespace Microsoft.Framework.Configuration.UserSecrets
 {
     public class PathHelper
     {

@@ -3,7 +3,7 @@
 
 using System;
 using System.IO;
-using Microsoft.Framework.ConfigurationModel.UserSecrets;
+using Microsoft.Framework.Configuration.UserSecrets;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
 using Microsoft.Framework.Runtime.Common.CommandLine;

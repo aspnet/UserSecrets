@@ -8,7 +8,7 @@ using SecretManager;
 using SecretManager.Tests;
 using Xunit;
 
-namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
+namespace Microsoft.Framework.Configuration.UserSecrets.Tests
 {
     public class ConfigurationExtensionTests
     {
@@ -22,7 +22,7 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
         [Fact]
         public void AddUserSecrets_Does_Not_Fail_On_Non_Existing_File_Explicitly_Passed()
         {
-            var configuration = new Configuration()
+            var configuration = new ConfigurationSection()
                                 .AddUserSecrets(userSecretsId: Guid.NewGuid().ToString());
         }
 
@@ -31,7 +31,7 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
 
-            var configuration = new Configuration(projectPath).AddUserSecrets();
+            var configuration = new ConfigurationSection(projectPath).AddUserSecrets();
             Assert.Equal(null, configuration["Facebook:AppSecret"]);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -48,7 +48,7 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
 
             secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
-            var configuration = new Configuration(projectPath).AddUserSecrets();
+            var configuration = new ConfigurationSection(projectPath).AddUserSecrets();
             Assert.Equal("value1", configuration["Facebook:AppSecret"]);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -65,7 +65,7 @@ namespace Microsoft.Framework.ConfigurationModel.UserSecrets.Tests
 
             secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
-            var configuration = new Configuration()
+            var configuration = new ConfigurationSection()
                                 .AddUserSecrets(userSecretsId: userSecretsId);
 
             Assert.Equal("value1", configuration["Facebook:AppSecret"]);
