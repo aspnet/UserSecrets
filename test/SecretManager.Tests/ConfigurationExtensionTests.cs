@@ -22,7 +22,7 @@ namespace Microsoft.Framework.Configuration.UserSecrets.Tests
         [Fact]
         public void AddUserSecrets_Does_Not_Fail_On_Non_Existing_File_Explicitly_Passed()
         {
-            var configuration = new ConfigurationSection()
+            var builder = new ConfigurationBuilder()
                                 .AddUserSecrets(userSecretsId: Guid.NewGuid().ToString());
         }
 
@@ -31,7 +31,8 @@ namespace Microsoft.Framework.Configuration.UserSecrets.Tests
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
 
-            var configuration = new ConfigurationSection(projectPath).AddUserSecrets();
+            var builder = new ConfigurationBuilder(projectPath).AddUserSecrets();
+            var configuration = builder.Build();
             Assert.Equal(null, configuration["Facebook:AppSecret"]);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -48,7 +49,8 @@ namespace Microsoft.Framework.Configuration.UserSecrets.Tests
 
             secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
-            var configuration = new ConfigurationSection(projectPath).AddUserSecrets();
+            var builder = new ConfigurationBuilder(projectPath).AddUserSecrets();
+            var configuration = builder.Build();
             Assert.Equal("value1", configuration["Facebook:AppSecret"]);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -65,8 +67,9 @@ namespace Microsoft.Framework.Configuration.UserSecrets.Tests
 
             secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
-            var configuration = new ConfigurationSection()
+            var builder = new ConfigurationBuilder()
                                 .AddUserSecrets(userSecretsId: userSecretsId);
+            var configuration = builder.Build();
 
             Assert.Equal("value1", configuration["Facebook:AppSecret"]);
             UserSecretHelper.DeleteTempSecretProject(projectPath);
