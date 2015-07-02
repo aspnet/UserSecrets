@@ -1,6 +1,10 @@
 ﻿{
     "version": "1.0.0-*",
     "description": "ASP.NET 5 tool to manage user secrets.",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/aspnet/usersecrets"
+    },
     "dependencies": {
         "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-*",
         "Microsoft.Framework.Runtime.Abstractions": "1.0.0-*",
