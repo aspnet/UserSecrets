@@ -4,8 +4,8 @@
 using System;
 using Microsoft.Framework.Runtime;
 using Microsoft.Framework.Runtime.Infrastructure;
-using SecretManager;
-using SecretManager.Tests;
+using Microsoft.Framework.SecretManager;
+using Microsoft.Framework.SecretManager.Tests;
 using Xunit;
 
 namespace Microsoft.Framework.Configuration.UserSecrets.Tests

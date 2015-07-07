@@ -4,7 +4,7 @@
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
 
-namespace SecretManager
+namespace Microsoft.Framework.SecretManager
 {
     public class CommandOutputProvider : ILoggerProvider
     {

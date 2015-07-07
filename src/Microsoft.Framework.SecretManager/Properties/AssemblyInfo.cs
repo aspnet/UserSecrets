@@ -4,5 +4,5 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("SecretManager.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Framework.SecretManager.Tests")]
 [assembly: AssemblyMetadata("Serviceable", "True")]

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
 
-namespace SecretManager.Tests
+namespace Microsoft.Framework.SecretManager.Tests
 {
     public class TestLogger : ILogger
     {

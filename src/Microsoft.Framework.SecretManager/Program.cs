@@ -9,7 +9,7 @@ using Microsoft.Framework.Runtime;
 using Microsoft.Framework.Runtime.Common.CommandLine;
 using Newtonsoft.Json.Linq;
 
-namespace SecretManager
+namespace Microsoft.Framework.SecretManager
 {
     public class Program
     {

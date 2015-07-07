@@ -9,7 +9,7 @@ using Microsoft.Framework.Runtime;
 using Microsoft.Framework.Runtime.Infrastructure;
 using Xunit;
 
-namespace SecretManager.Tests
+namespace Microsoft.Framework.SecretManager.Tests
 {
     public class SecretManagerTests
     {
