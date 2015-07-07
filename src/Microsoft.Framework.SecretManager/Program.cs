@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.Reflection;
 using Microsoft.Framework.Configuration.UserSecrets;
 using Microsoft.Framework.Logging;
 using Microsoft.Framework.Runtime;
@@ -59,6 +60,7 @@ namespace Microsoft.Framework.SecretManager
                 var app = new CommandLineApplication();
                 app.Name = "user-secret";
                 app.Description = "Manages user secrets";
+                app.ShortVersionGetter = () => GetInformationalVersion();
 
                 app.HelpOption("-?|-h|--help");
                 var optVerbose = app.Option("-v|--verbose", "Verbose output", CommandOptionType.NoValue);
@@ -185,6 +187,18 @@ namespace Microsoft.Framework.SecretManager
                 Logger.LogCritical(Resources.Error_Command_Failed, exception.Message);
                 return 1;
             }
+        }
+
+        private static string GetInformationalVersion()
+        {
+            var assembly = typeof(Program).GetTypeInfo().Assembly;
+            var attributes = assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute[];
+
+            var versionAttribute = attributes.Length == 0 ? 
+                assembly.GetName().Version.ToString() :
+                attributes[0].InformationalVersion;
+
+            return versionAttribute;
         }
 
         private void PrintAll(JObject secrets)
