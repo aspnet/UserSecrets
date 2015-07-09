@@ -165,10 +165,7 @@ namespace Microsoft.Framework.SecretManager
                             CommandOutputProvider.LogLevel = LogLevel.Verbose;
                         }
 
-                        ProcessSecretFile(projectPath, secrets =>
-                        {
-                            secrets.RemoveAll();
-                        });
+                        ClearSecretFile(projectPath);
 
                         return 0;
                     });
@@ -218,9 +215,23 @@ namespace Microsoft.Framework.SecretManager
 
             if (persist)
             {
-                Directory.CreateDirectory(Path.GetDirectoryName(secretsFilePath));
-                File.WriteAllText(secretsFilePath, secretObj.ToString());
+                WriteSecretsFile(secretsFilePath, secretObj);
             }
+        }
+
+        private void ClearSecretFile(string projectPath)
+        {
+            Logger.LogVerbose(Resources.Message_Project_File_Path, projectPath);
+            var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
+            Logger.LogVerbose(Resources.Message_Secret_File_Path, secretsFilePath);
+
+            WriteSecretsFile(secretsFilePath, new JObject());
+        }
+
+        private static void WriteSecretsFile(string secretsFilePath, JObject contents)
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(secretsFilePath));
+            File.WriteAllText(secretsFilePath, contents.ToString());
         }
     }
 }
