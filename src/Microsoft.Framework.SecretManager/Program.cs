@@ -4,10 +4,10 @@
 using System;
 using System.IO;
 using System.Reflection;
+using Microsoft.Dnx.Runtime;
+using Microsoft.Dnx.Runtime.Common.CommandLine;
 using Microsoft.Framework.Configuration.UserSecrets;
 using Microsoft.Framework.Logging;
-using Microsoft.Framework.Runtime;
-using Microsoft.Framework.Runtime.Common.CommandLine;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Framework.SecretManager

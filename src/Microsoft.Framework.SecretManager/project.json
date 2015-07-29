@@ -7,7 +7,7 @@
     },
     "dependencies": {
         "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-*",
-        "Microsoft.Framework.Runtime.Abstractions": "1.0.0-*",
+        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
         "Microsoft.Framework.CommandLineUtils.Sources": { "version": "1.0.0-*", "type": "build" },
         "Microsoft.Framework.Logging": "1.0.0-*",
         "Newtonsoft.Json": "6.0.6"

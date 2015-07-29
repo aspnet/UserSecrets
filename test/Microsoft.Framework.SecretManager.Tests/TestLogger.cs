@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using Microsoft.Dnx.Runtime;
 using Microsoft.Framework.Logging;
-using Microsoft.Framework.Runtime;
 
 namespace Microsoft.Framework.SecretManager.Tests
 {
