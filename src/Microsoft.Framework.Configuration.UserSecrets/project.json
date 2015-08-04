@@ -1,4 +1,4 @@
-﻿{
+{
     "version": "1.0.0-*",
     "description": "ASP.NET 5 Configuration extensions to load user secrets.",
     "repository": {
@@ -13,7 +13,7 @@
         "dnx451": { },
         "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.20-beta-*",
+                "System.Runtime": "4.0.21-beta-*",
                 "System.Runtime.Serialization.Primitives": "4.0.10-*"
             }
         }
