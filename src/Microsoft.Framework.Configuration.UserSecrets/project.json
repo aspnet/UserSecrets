@@ -1,20 +1,23 @@
 {
-    "version": "1.0.0-*",
+    "version": "1.0.0-beta7",
     "description": "ASP.NET 5 Configuration extensions to load user secrets.",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/usersecrets"
     },
     "dependencies": {
-        "Microsoft.Framework.Configuration.Json": "1.0.0-*",
-        "Microsoft.Framework.NotNullAttribute.Sources": { "type": "build", "version": "1.0.0-*" }
+        "Microsoft.Framework.Configuration.Json": "1.0.0-beta7",
+        "Microsoft.Framework.NotNullAttribute.Sources": {
+            "type": "build",
+            "version": "1.0.0-beta7"
+        }
     },
     "frameworks": {
-        "dnx451": { },
+        "dnx451": {},
         "dnxcore50": {
             "dependencies": {
-                "System.Runtime": "4.0.21-beta-*",
-                "System.Runtime.Serialization.Primitives": "4.0.11-beta-*"
+                "System.Runtime": "4.0.21-beta-23225",
+                "System.Runtime.Serialization.Primitives": "4.0.11-beta-23225"
             }
         }
     }
