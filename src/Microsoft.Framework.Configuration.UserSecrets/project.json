@@ -1,6 +1,6 @@
 {
     "version": "1.0.0-*",
-    "description": "ASP.NET 5 Configuration extensions to load user secrets.",
+    "description": "Configuration extensions to load user secrets.",
     "repository": {
         "type": "git",
         "url": "git://github.com/aspnet/usersecrets"
