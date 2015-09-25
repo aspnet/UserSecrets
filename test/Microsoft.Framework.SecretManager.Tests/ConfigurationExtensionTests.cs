@@ -31,7 +31,7 @@ namespace Microsoft.Framework.Configuration.UserSecrets.Tests
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
 
-            var builder = new ConfigurationBuilder(projectPath).AddUserSecrets();
+            var builder = new ConfigurationBuilder().SetBasePath(projectPath).AddUserSecrets();
             var configuration = builder.Build();
             Assert.Equal(null, configuration["Facebook:AppSecret"]);
 
@@ -49,7 +49,7 @@ namespace Microsoft.Framework.Configuration.UserSecrets.Tests
 
             secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
-            var builder = new ConfigurationBuilder(projectPath).AddUserSecrets();
+            var builder = new ConfigurationBuilder().SetBasePath(projectPath).AddUserSecrets();
             var configuration = builder.Build();
             Assert.Equal("value1", configuration["Facebook:AppSecret"]);
 

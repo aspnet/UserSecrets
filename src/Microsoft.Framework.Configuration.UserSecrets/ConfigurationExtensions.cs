@@ -16,15 +16,15 @@ namespace Microsoft.Framework.Configuration
         /// <returns></returns>
         public static IConfigurationBuilder AddUserSecrets([NotNull]this IConfigurationBuilder configuration)
         {
-            if (string.IsNullOrEmpty(configuration.BasePath))
+            if (string.IsNullOrEmpty(configuration.GetBasePath()))
             {
                 throw new InvalidOperationException(Resources.FormatError_MissingBasePath(
-                    configuration.BasePath,
+                    configuration.GetBasePath(),
                     typeof(IConfigurationBuilder).Name,
-                    nameof(configuration.BasePath)));
+                    "BasePath"));
             }
 
-            var secretPath = PathHelper.GetSecretsPath(configuration.BasePath);
+            var secretPath = PathHelper.GetSecretsPath(configuration.GetBasePath());
             return configuration.AddJsonFile(secretPath, optional: true);
         }
 
