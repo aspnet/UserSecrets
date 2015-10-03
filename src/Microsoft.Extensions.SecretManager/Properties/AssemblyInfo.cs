@@ -5,6 +5,6 @@ using System.Reflection;
 using System.Resources;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Microsoft.Framework.SecretManager.Tests")]
+[assembly: InternalsVisibleTo("Microsoft.Extensions.SecretManager.Tests")]
 [assembly: AssemblyMetadata("Serviceable", "True")]
 [assembly: NeutralResourcesLanguage("en-us")]

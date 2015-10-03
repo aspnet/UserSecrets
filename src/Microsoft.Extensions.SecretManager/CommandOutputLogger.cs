@@ -3,9 +3,9 @@
 
 using System;
 using Microsoft.Dnx.Runtime.Common.CommandLine;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Framework.SecretManager
+namespace Microsoft.Extensions.SecretManager
 {
     /// <summary>
     /// Logger to print formatted command output.

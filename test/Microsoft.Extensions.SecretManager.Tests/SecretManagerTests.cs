@@ -6,10 +6,10 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Dnx.Runtime.Infrastructure;
-using Microsoft.Framework.Configuration.UserSecrets;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Xunit;
 
-namespace Microsoft.Framework.SecretManager.Tests
+namespace Microsoft.Extensions.SecretManager.Tests
 {
     public class SecretManagerTests
     {

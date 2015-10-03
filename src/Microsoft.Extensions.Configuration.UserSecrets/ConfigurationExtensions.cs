@@ -2,10 +2,10 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Microsoft.Framework.Configuration.UserSecrets;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.Internal;
 
-namespace Microsoft.Framework.Configuration
+namespace Microsoft.Extensions.Configuration
 {
     public static class ConfigurationExtensions
     {

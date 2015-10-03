@@ -1,7 +1,7 @@
-﻿{
+{
     "dependencies": {
         "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
-        "Microsoft.Framework.SecretManager": "1.0.0-*",
+        "Microsoft.Extensions.SecretManager": "1.0.0-*",
         "xunit.runner.aspnet": "2.0.0-aspnet-*"
     },
     "frameworks": {

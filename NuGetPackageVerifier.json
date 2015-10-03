@@ -9,8 +9,8 @@
             "StrictSemanticVersionValidationRule"
         ],
         "packages": {
-            "Microsoft.Framework.Configuration.UserSecrets": { },
-            "Microsoft.Framework.SecretManager": { }
+            "Microsoft.Extensions.Configuration.UserSecrets": { },
+            "Microsoft.Extensions.SecretManager": { }
         }
     },
     "Default": { // Ru les to run for packages not listed in any other set.

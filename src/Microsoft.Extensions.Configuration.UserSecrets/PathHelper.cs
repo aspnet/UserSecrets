@@ -3,10 +3,10 @@
 
 using System;
 using System.IO;
-using Microsoft.Framework.Internal;
+using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Framework.Configuration.UserSecrets
+namespace Microsoft.Extensions.Configuration.UserSecrets
 {
     public class PathHelper
     {

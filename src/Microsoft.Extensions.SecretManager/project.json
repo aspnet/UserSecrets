@@ -1,4 +1,4 @@
-﻿{
+{
     "version": "1.0.0-*",
     "description": "DNX tool to manage user secrets.",
     "repository": {
@@ -6,14 +6,14 @@
         "url": "git://github.com/aspnet/usersecrets"
     },
     "dependencies": {
-        "Microsoft.Framework.Configuration.UserSecrets": "1.0.0-*",
+        "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-*",
         "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
-        "Microsoft.Framework.CommandLineUtils.Sources": { "version": "1.0.0-*", "type": "build" },
-        "Microsoft.Framework.Logging": "1.0.0-*",
+        "Microsoft.Extensions.CommandLineUtils.Sources": { "version": "1.0.0-*", "type": "build" },
+        "Microsoft.Extensions.Logging": "1.0.0-*",
         "Newtonsoft.Json": "6.0.6"
     },
     "commands": {
-        "user-secret": "Microsoft.Framework.SecretManager"
+        "user-secret": "Microsoft.Extensions.SecretManager"
     },
     "frameworks": {
         "dnx451": { },

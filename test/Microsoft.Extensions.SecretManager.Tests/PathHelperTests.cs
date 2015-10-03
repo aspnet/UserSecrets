@@ -3,10 +3,10 @@
 
 using System;
 using System.IO;
-using Microsoft.Framework.Configuration.UserSecrets;
+using Microsoft.Extensions.Configuration.UserSecrets;
 using Xunit;
 
-namespace Microsoft.Framework.SecretManager.Tests
+namespace Microsoft.Extensions.SecretManager.Tests
 {
     public class PathHelperTests
     {

@@ -4,11 +4,11 @@
 using System;
 using Microsoft.Dnx.Runtime;
 using Microsoft.Dnx.Runtime.Infrastructure;
-using Microsoft.Framework.SecretManager;
-using Microsoft.Framework.SecretManager.Tests;
+using Microsoft.Extensions.SecretManager;
+using Microsoft.Extensions.SecretManager.Tests;
 using Xunit;
 
-namespace Microsoft.Framework.Configuration.UserSecrets.Tests
+namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 {
     public class ConfigurationExtensionTests
     {

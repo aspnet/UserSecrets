@@ -3,9 +3,9 @@
 
 using System;
 using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Framework.SecretManager
+namespace Microsoft.Extensions.SecretManager
 {
     public class CommandOutputProvider : ILoggerProvider
     {

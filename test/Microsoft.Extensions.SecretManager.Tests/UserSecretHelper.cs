@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Microsoft.Framework.SecretManager.Tests
+namespace Microsoft.Extensions.SecretManager.Tests
 {
     public class UserSecretHelper
     {

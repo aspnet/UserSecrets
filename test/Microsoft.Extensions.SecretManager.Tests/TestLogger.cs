@@ -4,9 +4,9 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Dnx.Runtime;
-using Microsoft.Framework.Logging;
+using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Framework.SecretManager.Tests
+namespace Microsoft.Extensions.SecretManager.Tests
 {
     public class TestLogger : ILogger
     {
