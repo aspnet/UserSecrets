@@ -3,7 +3,6 @@
 
 using System;
 using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Extensions.Internal;
 
 namespace Microsoft.Extensions.Configuration
 {
@@ -14,8 +13,13 @@ namespace Microsoft.Extensions.Configuration
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IConfigurationBuilder AddUserSecrets([NotNull]this IConfigurationBuilder configuration)
+        public static IConfigurationBuilder AddUserSecrets(this IConfigurationBuilder configuration)
         {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
             if (string.IsNullOrEmpty(configuration.GetBasePath()))
             {
                 throw new InvalidOperationException(Resources.FormatError_MissingBasePath(
@@ -33,8 +37,18 @@ namespace Microsoft.Extensions.Configuration
         /// </summary>
         /// <param name="configuration"></param>
         /// <returns></returns>
-        public static IConfigurationBuilder AddUserSecrets([NotNull]this IConfigurationBuilder configuration, [NotNull]string userSecretsId)
+        public static IConfigurationBuilder AddUserSecrets(this IConfigurationBuilder configuration, string userSecretsId)
         {
+            if (configuration == null)
+            {
+                throw new ArgumentNullException(nameof(configuration));
+            }
+
+            if (userSecretsId == null)
+            {
+                throw new ArgumentNullException(nameof(userSecretsId));
+            }
+
             var secretPath = PathHelper.GetSecretsPathFromSecretsId(userSecretsId);
             return configuration.AddJsonFile(secretPath, optional: true);
         }

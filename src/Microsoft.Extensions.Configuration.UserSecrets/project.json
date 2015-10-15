@@ -6,8 +6,7 @@
         "url": "git://github.com/aspnet/usersecrets"
     },
     "dependencies": {
-        "Microsoft.Extensions.Configuration.Json": "1.0.0-*",
-        "Microsoft.Extensions.NotNullAttribute.Sources": { "type": "build", "version": "1.0.0-*" }
+        "Microsoft.Extensions.Configuration.Json": "1.0.0-*"
     },
     "frameworks": {
         "dnx451": { },

@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using Microsoft.Extensions.Internal;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Extensions.Configuration.UserSecrets
@@ -12,8 +11,13 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
     {
         private const string Secrets_File_Name = "secrets.json";
 
-        public static string GetSecretsPath([NotNull]string projectPath)
+        public static string GetSecretsPath(string projectPath)
         {
+            if (projectPath == null)
+            {
+                throw new ArgumentNullException(nameof(projectPath));
+            }
+
             var projectFilePath = Path.Combine(projectPath, "project.json");
 
             if (!File.Exists(projectFilePath))
@@ -34,8 +38,13 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
             return GetSecretsPathFromSecretsId(userSecretsId);
         }
 
-        public static string GetSecretsPathFromSecretsId([NotNull]string userSecretsId)
+        public static string GetSecretsPathFromSecretsId(string userSecretsId)
         {
+            if (userSecretsId == null)
+            {
+                throw new ArgumentNullException(nameof(userSecretsId));
+            }
+
             var badCharIndex = userSecretsId.IndexOfAny(Path.GetInvalidPathChars());
             if (badCharIndex != -1)
             {
