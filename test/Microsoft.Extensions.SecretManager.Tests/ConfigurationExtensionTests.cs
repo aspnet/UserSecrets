@@ -2,8 +2,7 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Microsoft.Dnx.Runtime;
-using Microsoft.Dnx.Runtime.Infrastructure;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.SecretManager;
 using Microsoft.Extensions.SecretManager.Tests;
 using Xunit;
@@ -16,7 +15,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 
         public ConfigurationExtensionTests()
         {
-            _runtimeEnv = ((IRuntimeEnvironment)CallContextServiceLocator.Locator.ServiceProvider.GetService(typeof(IRuntimeEnvironment)));
+            _runtimeEnv = PlatformServices.Default.Runtime;
         }
 
         [Fact]

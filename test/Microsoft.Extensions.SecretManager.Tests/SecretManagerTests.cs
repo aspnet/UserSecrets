@@ -4,8 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Dnx.Runtime;
-using Microsoft.Dnx.Runtime.Infrastructure;
+using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Xunit;
 
@@ -17,7 +16,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
 
         public SecretManagerTests()
         {
-            _runtimeEnv = ((IRuntimeEnvironment)CallContextServiceLocator.Locator.ServiceProvider.GetService(typeof(IRuntimeEnvironment)));
+            _runtimeEnv = PlatformServices.Default.Runtime;
         }
 
         [Fact]
