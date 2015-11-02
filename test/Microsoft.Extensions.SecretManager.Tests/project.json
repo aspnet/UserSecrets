@@ -1,4 +1,8 @@
 {
+    "compilationOptions": {
+        "warningsAsErrors": true,
+        "keyFile": "../../tools/Key.snk"
+    },
     "dependencies": {
         "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
         "Microsoft.Extensions.SecretManager": "1.0.0-*",
