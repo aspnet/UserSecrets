@@ -4,10 +4,10 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Dnx.Runtime.Common.CommandLine;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Extensions.SecretManager
@@ -192,11 +192,11 @@ namespace Microsoft.Extensions.SecretManager
         private static string GetInformationalVersion()
         {
             var assembly = typeof(Program).GetTypeInfo().Assembly;
-            var attributes = assembly.GetCustomAttributes(typeof(AssemblyInformationalVersionAttribute)) as AssemblyInformationalVersionAttribute[];
+            var attribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
 
-            var versionAttribute = attributes.Length == 0 ? 
+            var versionAttribute = attribute == null ?
                 assembly.GetName().Version.ToString() :
-                attributes[0].InformationalVersion;
+                attribute.InformationalVersion;
 
             return versionAttribute;
         }
