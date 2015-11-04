@@ -4,27 +4,31 @@
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk"
   },
-    "description": "DNX tool to manage user secrets.",
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/aspnet/usersecrets"
+  "description": "DNX tool to manage user secrets.",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aspnet/usersecrets"
+  },
+  "dependencies": {
+    "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-*",
+    "Microsoft.Extensions.PlatformAbstractions": "1.0.0-*",
+    "Microsoft.Extensions.CommandLineUtils.Sources": {
+      "version": "1.0.0-*",
+      "type": "build"
     },
-    "dependencies": {
-        "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-*",
-        "Microsoft.Extensions.PlatformAbstractions": "1.0.0-*",
-        "Microsoft.Extensions.CommandLineUtils.Sources": { "version": "1.0.0-*", "type": "build" },
-        "Microsoft.Extensions.Logging": "1.0.0-*",
-        "Newtonsoft.Json": "6.0.6"
-    },
-    "commands": {
-        "user-secret": "Microsoft.Extensions.SecretManager"
-    },
-    "frameworks": {
-        "dnx451": { },
-        "dnxcore50": {
-            "dependencies": {
-                "System.Console": "4.0.0-beta-*"
-            }
-        }
+    "Microsoft.Extensions.Logging": "1.0.0-*",
+    "Newtonsoft.Json": "6.0.6"
+  },
+  "commands": {
+    "user-secret": "Microsoft.Extensions.SecretManager"
+  },
+  "frameworks": {
+    "dnx451": { },
+    "dnxcore50": {
+      "dependencies": {
+        "System.Console": "4.0.0-beta-*",
+        "System.Reflection.Extensions": "4.0.1-beta-*"
+      }
     }
+  }
 }
