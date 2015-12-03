@@ -12,12 +12,12 @@ namespace Microsoft.Extensions.SecretManager.Tests
     {
         private readonly CommandOutputLogger _commandOutputLogger;
 
-        public TestLogger(IRuntimeEnvironment runtimeEnv, bool verbose = false)
+        public TestLogger(IRuntimeEnvironment runtimeEnv, bool debug = false)
         {
             var commandOutputProvider = new CommandOutputProvider(runtimeEnv);
-            if (verbose)
+            if (debug)
             {
-                commandOutputProvider.LogLevel = LogLevel.Verbose;
+                commandOutputProvider.LogLevel = LogLevel.Debug;
             }
 
             _commandOutputLogger = (CommandOutputLogger)commandOutputProvider.CreateLogger("");

@@ -80,7 +80,7 @@ namespace Microsoft.Extensions.SecretManager
 
                         if (optVerbose.HasValue())
                         {
-                            CommandOutputProvider.LogLevel = LogLevel.Verbose;
+                            CommandOutputProvider.LogLevel = LogLevel.Debug;
                         }
 
                         ProcessSecretFile(projectPath, secrets =>
@@ -107,7 +107,7 @@ namespace Microsoft.Extensions.SecretManager
 
                         if (optVerbose.HasValue())
                         {
-                            CommandOutputProvider.LogLevel = LogLevel.Verbose;
+                            CommandOutputProvider.LogLevel = LogLevel.Debug;
                         }
 
                         ProcessSecretFile(projectPath, secrets =>
@@ -139,7 +139,7 @@ namespace Microsoft.Extensions.SecretManager
 
                         if (optVerbose.HasValue())
                         {
-                            CommandOutputProvider.LogLevel = LogLevel.Verbose;
+                            CommandOutputProvider.LogLevel = LogLevel.Debug;
                         }
 
                         ProcessSecretFile(projectPath, secrets =>
@@ -164,7 +164,7 @@ namespace Microsoft.Extensions.SecretManager
 
                         if (optVerbose.HasValue())
                         {
-                            CommandOutputProvider.LogLevel = LogLevel.Verbose;
+                            CommandOutputProvider.LogLevel = LogLevel.Debug;
                         }
 
                         ClearSecretFile(projectPath);
@@ -218,9 +218,9 @@ namespace Microsoft.Extensions.SecretManager
 
         private void ProcessSecretFile(string projectPath, Action<JObject> observer, bool persist = true)
         {
-            Logger.LogVerbose(Resources.Message_Project_File_Path, projectPath);
+            Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
             var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
-            Logger.LogVerbose(Resources.Message_Secret_File_Path, secretsFilePath);
+            Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
             var secretObj = File.Exists(secretsFilePath) ?
                             JObject.Parse(File.ReadAllText(secretsFilePath)) :
                             new JObject();
@@ -235,9 +235,9 @@ namespace Microsoft.Extensions.SecretManager
 
         private void ClearSecretFile(string projectPath)
         {
-            Logger.LogVerbose(Resources.Message_Project_File_Path, projectPath);
+            Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
             var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
-            Logger.LogVerbose(Resources.Message_Secret_File_Path, secretsFilePath);
+            Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
 
             WriteSecretsFile(secretsFilePath, new JObject());
         }

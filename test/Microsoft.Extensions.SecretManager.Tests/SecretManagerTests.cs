@@ -137,7 +137,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void SetSecret_With_Verbose_Flag()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var logger = new TestLogger(_runtimeEnv, verbose: true);
+            var logger = new TestLogger(_runtimeEnv, debug: true);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
 
             secretManager.Main(new string[] { "-v", "set", "secret1", "value1", "-p", projectPath });
