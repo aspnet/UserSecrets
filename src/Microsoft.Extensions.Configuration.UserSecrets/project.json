@@ -15,10 +15,6 @@
   "frameworks": {
     "net451": {},
     "dotnet5.4": {
-      "dependencies": {
-        "System.Runtime": "4.0.21-*",
-        "System.Runtime.Serialization.Primitives": "4.0.11-*"
-      }
     }
   }
 }
