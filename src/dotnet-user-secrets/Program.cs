@@ -52,13 +52,18 @@ namespace Microsoft.Extensions.SecretManager
                 _loggerProvider = value;
             }
         }
+        
+        public static int Main(string[] args)
+        {
+            return new Program(PlatformServices.Default.Runtime).Run(args);
+        }
 
-        public int Main(string[] args)
+        public int Run(string[] args)
         {
             try
             {
                 var app = new CommandLineApplication();
-                app.Name = "user-secret";
+                app.Name = "dotnet-user-secrets";
                 app.Description = "Manages user secrets";
                 app.ShortVersionGetter = () => GetInformationalVersion();
 

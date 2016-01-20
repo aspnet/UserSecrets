@@ -4,13 +4,27 @@
         "keyFile": "../../tools/Key.snk"
     },
     "dependencies": {
-        "Microsoft.Dnx.Runtime.Abstractions": "1.0.0-*",
-        "Microsoft.Extensions.SecretManager": "1.0.0-*",
-        "xunit.runner.aspnet": "2.0.0-aspnet-*"
+        "dotnet-user-secrets": "1.0.0-*",
+        "xunit": "2.1.0"
     },
+    "testRunner": "xunit",
     "frameworks": {
-        "dnx451": { },
-        "dnxcore50": { }
+        "net451": {
+            "frameworkAssemblies": {
+                "System.Runtime": "",
+                "System.Threading.Tasks": ""
+            },
+            "dependencies": {
+                "xunit.runner.console": "2.1.0"
+            }
+        },
+        "dnxcore50": {
+            "dependencies": {
+                "NETStandard.Library": "1.0.0-*",
+                "xunit.runner.aspnet": "2.0.0-aspnet-*"
+            },
+            "imports": "portable-net45+win8"
+        }
     },
     "commands": {
         "test": "xunit.runner.aspnet"

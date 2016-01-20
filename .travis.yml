@@ -14,5 +14,9 @@ env:
   - KOREBUILD_DNU_RESTORE_CORECLR=true
 mono:
   - 4.0.5
+os:
+  - linux
+  - osx
+osx_image: xcode7.1
 script:
   - ./build.sh --quiet verify

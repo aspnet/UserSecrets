@@ -1,10 +1,11 @@
 {
   "version": "1.0.0-*",
   "compilationOptions": {
+    "emitEntryPoint": true,
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk"
   },
-  "description": "DNX tool to manage user secrets.",
+  "description": ".NET Core tool to manage user secrets.",
   "repository": {
     "type": "git",
     "url": "git://github.com/aspnet/usersecrets"
@@ -16,16 +17,16 @@
     "Microsoft.Extensions.Logging": "1.0.0-*",
     "Newtonsoft.Json": "6.0.6"
   },
-  "commands": {
-    "user-secret": "Microsoft.Extensions.SecretManager"
-  },
   "frameworks": {
-    "dnx451": { },
-    "dnxcore50": {
+    "net451": { },
+    "dotnet5.4": {
       "dependencies": {
-        "System.Console": "4.0.0-*",
-        "System.Reflection.Extensions": "4.0.1-*"
-      }
+        "NETStandard.Library": "1.0.0-*"
+      },
+      "imports": "portable-net451+win8"
     }
+  },
+  "namedResource": {
+    "Microsoft.Extensions.SecretManager.Resources": "Resources.resx"
   }
 }

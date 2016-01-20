@@ -65,7 +65,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
                 var parameters = fromCurrentDirectory ?
                     new string[] { "set", secret.Key, secret.Value } :
                     new string[] { "set", secret.Key, secret.Value, "-p", projectPath };
-                secretManager.Main(parameters);
+                secretManager.Run(parameters);
             }
 
             Assert.Equal(4, logger.Messages.Count);
@@ -80,7 +80,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
             logger.Messages.Clear();
             var args = fromCurrentDirectory ?
                 new string[] { "list" } : new string[] { "list", "-p", projectPath };
-            secretManager.Main(args);
+            secretManager.Run(args);
             Assert.Equal(4, logger.Messages.Count);
             foreach (var keyValue in secrets)
             {
@@ -96,14 +96,14 @@ namespace Microsoft.Extensions.SecretManager.Tests
                 var parameters = fromCurrentDirectory ?
                     new string[] { "remove", secret.Key } :
                     new string[] { "remove", secret.Key, "-p", projectPath };
-                secretManager.Main(parameters);
+                secretManager.Run(parameters);
             }
 
             // Verify secrets are removed.
             logger.Messages.Clear();
             args = fromCurrentDirectory ?
                 new string[] { "list" } : new string[] { "list", "-p", projectPath };
-            secretManager.Main(args);
+            secretManager.Run(args);
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains(Resources.Error_No_Secrets_Found, logger.Messages);
 
@@ -117,16 +117,16 @@ namespace Microsoft.Extensions.SecretManager.Tests
             var logger = new TestLogger(_runtimeEnv);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
 
-            secretManager.Main(new string[] { "set", "secret1", "value1", "-p", projectPath });
+            secretManager.Run(new string[] { "set", "secret1", "value1", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains("Successfully saved secret1 = value1 to the secret store.", logger.Messages);
-            secretManager.Main(new string[] { "set", "secret1", "value2", "-p", projectPath });
+            secretManager.Run(new string[] { "set", "secret1", "value2", "-p", projectPath });
             Assert.Equal(2, logger.Messages.Count);
             Assert.Contains("Successfully saved secret1 = value2 to the secret store.", logger.Messages);
 
             logger.Messages.Clear();
 
-            secretManager.Main(new string[] { "list", "-p", projectPath });
+            secretManager.Run(new string[] { "list", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains("secret1 = value2", logger.Messages);
 
@@ -140,14 +140,14 @@ namespace Microsoft.Extensions.SecretManager.Tests
             var logger = new TestLogger(_runtimeEnv, debug: true);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
 
-            secretManager.Main(new string[] { "-v", "set", "secret1", "value1", "-p", projectPath });
+            secretManager.Run(new string[] { "-v", "set", "secret1", "value1", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
             Assert.Contains(string.Format("Project file path {0}.", projectPath), logger.Messages);
             Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath)), logger.Messages);
             Assert.Contains("Successfully saved secret1 = value1 to the secret store.", logger.Messages);
             logger.Messages.Clear();
 
-            secretManager.Main(new string[] { "-v", "list", "-p", projectPath });
+            secretManager.Run(new string[] { "-v", "list", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
             Assert.Contains(string.Format("Project file path {0}.", projectPath), logger.Messages);
             Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath)), logger.Messages);
@@ -162,7 +162,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
             var projectPath = UserSecretHelper.GetTempSecretProject();
             var logger = new TestLogger(_runtimeEnv);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
-            secretManager.Main(new string[] { "remove", "secret1", "-p", projectPath });
+            secretManager.Run(new string[] { "remove", "secret1", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains("Cannot find 'secret1' in the secret store.", logger.Messages);
         }
@@ -173,7 +173,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
             var projectPath = UserSecretHelper.GetTempSecretProject();
             var logger = new TestLogger(_runtimeEnv);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
-            secretManager.Main(new string[] { "list", "-p", projectPath });
+            secretManager.Run(new string[] { "list", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains(Resources.Error_No_Secrets_Found, logger.Messages);
         }
@@ -214,7 +214,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
                 var parameters = fromCurrentDirectory ?
                     new string[] { "set", secret.Key, secret.Value } :
                     new string[] { "set", secret.Key, secret.Value, "-p", projectPath };
-                secretManager.Main(parameters);
+                secretManager.Run(parameters);
             }
 
             Assert.Equal(4, logger.Messages.Count);
@@ -231,7 +231,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
             var args = fromCurrentDirectory ?
                 new string[] { "list" } :
                 new string[] { "list", "-p", projectPath };
-            secretManager.Main(args);
+            secretManager.Run(args);
             Assert.Equal(4, logger.Messages.Count);
             foreach (var keyValue in secrets)
             {
@@ -243,11 +243,11 @@ namespace Microsoft.Extensions.SecretManager.Tests
             // Clear secrets.
             logger.Messages.Clear();
             args = fromCurrentDirectory ? new string[] { "clear" } : new string[] { "clear", "-p", projectPath };
-            secretManager.Main(args);
+            secretManager.Run(args);
             Assert.Equal(0, logger.Messages.Count);
 
             args = fromCurrentDirectory ? new string[] { "list" } : new string[] { "list", "-p", projectPath };
-            secretManager.Main(args);
+            secretManager.Run(args);
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains(Resources.Error_No_Secrets_Found, logger.Messages);
         }

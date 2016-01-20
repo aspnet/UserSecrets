@@ -46,7 +46,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             var logger = new TestLogger(_runtimeEnv);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
 
-            secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
+            secretManager.Run(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
             var builder = new ConfigurationBuilder().SetBasePath(projectPath).AddUserSecrets();
             var configuration = builder.Build();
@@ -64,7 +64,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             var logger = new TestLogger(_runtimeEnv);
             var secretManager = new Program(_runtimeEnv) { Logger = logger };
 
-            secretManager.Main(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
+            secretManager.Run(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
             var builder = new ConfigurationBuilder()
                                 .AddUserSecrets(userSecretsId: userSecretsId);
