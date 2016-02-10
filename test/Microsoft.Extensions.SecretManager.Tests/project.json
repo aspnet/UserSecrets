@@ -1,32 +1,30 @@
 {
-    "compilationOptions": {
-        "warningsAsErrors": true,
-        "keyFile": "../../tools/Key.snk"
+  "compilationOptions": {
+    "warningsAsErrors": true,
+    "keyFile": "../../tools/Key.snk"
+  },
+  "dependencies": {
+    "dotnet-user-secrets": "1.0.0-*",
+    "xunit": "2.1.0"
+  },
+  "testRunner": "xunit",
+  "frameworks": {
+    "dnxcore50": {
+      "dependencies": {
+        "NETStandard.Library": "1.0.0-*",
+        "dotnet-test-xunit": "1.0.0-dev-*",
+        "Microsoft.NETCore.Platforms": "1.0.1-*"
+      },
+      "imports": "portable-net451+win8"
     },
-    "dependencies": {
-        "dotnet-user-secrets": "1.0.0-*",
-        "xunit": "2.1.0"
-    },
-    "testRunner": "xunit",
-    "frameworks": {
-        "net451": {
-            "frameworkAssemblies": {
-                "System.Runtime": "",
-                "System.Threading.Tasks": ""
-            },
-            "dependencies": {
-                "xunit.runner.console": "2.1.0"
-            }
-        },
-        "dnxcore50": {
-            "dependencies": {
-                "NETStandard.Library": "1.0.0-*",
-                "xunit.runner.aspnet": "2.0.0-aspnet-*"
-            },
-            "imports": "portable-net45+win8"
-        }
-    },
-    "commands": {
-        "test": "xunit.runner.aspnet"
+    "net451": {
+      "frameworkAssemblies": {
+        "System.Runtime": "",
+        "System.Threading.Tasks": ""
+      },
+      "dependencies": {
+        "xunit.runner.console": "2.1.0"
+      }
     }
+  }
 }
