@@ -16,15 +16,6 @@
         "Microsoft.NETCore.Platforms": "1.0.1-*"
       },
       "imports": "portable-net451+win8"
-    },
-    "net451": {
-      "frameworkAssemblies": {
-        "System.Runtime": "",
-        "System.Threading.Tasks": ""
-      },
-      "dependencies": {
-        "xunit.runner.console": "2.1.0"
-      }
     }
   }
 }
