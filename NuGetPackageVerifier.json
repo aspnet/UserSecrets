@@ -1,26 +1,16 @@
 {
     "adx": { // Packages written by the ADX team and that ship on NuGet.org
         "rules": [
-            "AssemblyHasDocumentFileRule",
-            "AssemblyHasVersionAttributesRule",
-            "AssemblyHasServicingAttributeRule",
-            "AssemblyHasNeutralResourcesLanguageAttributeRule",
-            "SatellitePackageRule",
-            "StrictSemanticVersionValidationRule"
+            "AdxVerificationCompositeRule"
         ],
         "packages": {
-            "Microsoft.Extensions.Configuration.UserSecrets": { },
-            "Microsoft.Extensions.SecretManager": { }
+            "dotnet-user-secrets": { },
+            "Microsoft.Extensions.Configuration.UserSecrets": { }
         }
     },
-    "Default": { // Ru les to run for packages not listed in any other set.
+    "Default": { // Rules to run for packages not listed in any other set.
         "rules": [
-            "AssemblyHasDocumentFileRule",
-            "AssemblyHasVersionAttributesRule",
-            "AssemblyHasServicingAttributeRule",
-            "AssemblyHasNeutralResourcesLanguageAttributeRule",
-            "SatellitePackageRule",
-            "StrictSemanticVersionValidationRule"
+            "DefaultCompositeRule"
         ]
     }
 }

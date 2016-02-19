@@ -36,6 +36,7 @@ namespace Microsoft.Extensions.Configuration
         /// Adds the user secrets configuration source with specified secrets id.
         /// </summary>
         /// <param name="configuration"></param>
+        /// <param name="userSecretsId"></param>
         /// <returns></returns>
         public static IConfigurationBuilder AddUserSecrets(this IConfigurationBuilder configuration, string userSecretsId)
         {
