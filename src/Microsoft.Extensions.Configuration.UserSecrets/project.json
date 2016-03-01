@@ -3,7 +3,9 @@
   "compilationOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
-    "nowarn": [ "CS1591" ],
+    "nowarn": [
+      "CS1591"
+    ],
     "xmlDoc": true
   },
   "description": "Configuration extensions to load user secrets.",
@@ -15,9 +17,12 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0-*"
   },
   "frameworks": {
-    "net451": { },
-    "dotnet5.4": {
-      "imports": "portable-net451+win8"
+    "net451": {},
+    "netstandard1.3": {
+      "imports": [
+        "dotnet5.4",
+        "portable-net451+win8"
+      ]
     }
   }
 }
