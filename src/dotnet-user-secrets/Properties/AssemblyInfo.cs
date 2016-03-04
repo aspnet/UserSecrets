@@ -10,3 +10,4 @@ using System.Runtime.CompilerServices;
 [assembly: NeutralResourcesLanguage("en-us")]
 [assembly: AssemblyCompany("Microsoft Corporation.")]
 [assembly: AssemblyCopyright("© Microsoft Corporation. All rights reserved.")]
+[assembly: AssemblyProduct("Microsoft .NET Extensions")]
