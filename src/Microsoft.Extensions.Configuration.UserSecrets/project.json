@@ -8,7 +8,12 @@
     ],
     "xmlDoc": true
   },
-  "description": "Configuration extensions to load user secrets.",
+  "description": "User secrets configuration provider implementation for Microsoft.Extensions.Configuration.",
+  "tags": [
+    "configuration",
+    "secrets",
+    "usersecrets"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/aspnet/usersecrets"
@@ -17,7 +22,7 @@
     "Microsoft.Extensions.Configuration.Json": "1.0.0-*"
   },
   "frameworks": {
-    "net451": {},
+    "net451": { },
     "netstandard1.3": {
       "imports": [
         "dotnet5.4",

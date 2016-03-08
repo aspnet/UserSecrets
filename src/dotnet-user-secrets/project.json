@@ -9,7 +9,12 @@
     ],
     "xmlDoc": true
   },
-  "description": ".NET Core tool to manage user secrets.",
+  "description": "Command line tool to manage user secrets for Microsoft.Extensions.Configuration.",
+  "tags": [
+    "configuration",
+    "secrets",
+    "usersecrets"
+  ],
   "repository": {
     "type": "git",
     "url": "git://github.com/aspnet/usersecrets"
