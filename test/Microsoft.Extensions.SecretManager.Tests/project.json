@@ -11,7 +11,6 @@
   "frameworks": {
     "netstandardapp1.5": {
       "dependencies": {
-        "NETStandard.Library": "1.0.0-*",
         "dotnet-test-xunit": "1.0.0-dev-*",
         "Microsoft.NETCore.Platforms": "1.0.1-*"
       },
