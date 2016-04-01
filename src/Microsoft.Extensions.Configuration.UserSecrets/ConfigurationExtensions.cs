@@ -2,12 +2,16 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.IO;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.FileProviders;
 
 namespace Microsoft.Extensions.Configuration
 {
     public static class ConfigurationExtensions
     {
+        private const string Secrets_File_Name = "secrets.json";
+
         /// <summary>
         /// Adds the user secrets configuration source.
         /// </summary>
@@ -28,8 +32,7 @@ namespace Microsoft.Extensions.Configuration
                     "BasePath"));
             }
 
-            var secretPath = PathHelper.GetSecretsPath(configuration.GetBasePath());
-            return configuration.AddJsonFile(secretPath, optional: true);
+            return AddSecretsFile(configuration, PathHelper.GetSecretsPath(configuration.GetBasePath()));
         }
 
         /// <summary>
@@ -50,8 +53,20 @@ namespace Microsoft.Extensions.Configuration
                 throw new ArgumentNullException(nameof(userSecretsId));
             }
 
-            var secretPath = PathHelper.GetSecretsPathFromSecretsId(userSecretsId);
-            return configuration.AddJsonFile(secretPath, optional: true);
+            return AddSecretsFile(configuration, PathHelper.GetSecretsPathFromSecretsId(userSecretsId));
+        }
+
+        private static IConfigurationBuilder AddSecretsFile(IConfigurationBuilder configuration, string secretPath)
+        {
+            var directoryPath = Path.GetDirectoryName(secretPath);
+            return configuration.AddJsonFile(source => {
+                source.Path = PathHelper.Secrets_File_Name;
+                if (Directory.Exists(directoryPath))
+                {
+                    source.FileProvider = new PhysicalFileProvider(directoryPath);
+                }
+                source.Optional = true;
+            });
         }
     }
 }

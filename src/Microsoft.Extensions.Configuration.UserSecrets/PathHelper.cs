@@ -9,7 +9,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
 {
     public class PathHelper
     {
-        private const string Secrets_File_Name = "secrets.json";
+        internal const string Secrets_File_Name = "secrets.json";
 
         public static string GetSecretsPath(string projectPath)
         {
