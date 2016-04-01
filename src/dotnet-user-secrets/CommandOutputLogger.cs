@@ -21,7 +21,7 @@ namespace Microsoft.Extensions.SecretManager
             _outConsole = AnsiConsole.GetOutput(useConsoleColor);
         }
 
-        public IDisposable BeginScopeImpl(object state)
+        public IDisposable BeginScope<TState>(TState state)
         {
             throw new NotImplementedException();
         }

@@ -25,7 +25,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
 
         public List<string> Messages { get; set; } = new List<string>();
 
-        public IDisposable BeginScopeImpl(object state)
+        public IDisposable BeginScope<TState>(TState state)
         {
             throw new NotImplementedException();
         }
