@@ -11,58 +11,6 @@ namespace Microsoft.Extensions.Configuration
     public static class ConfigurationExtensions
     {
         private const string Secrets_File_Name = "secrets.json";
-        private const string ProjectPathKey = "ProjectPath";
-
-        /// <summary>
-        /// Gets the project path
-        /// </summary>
-        /// <param name="configurationBuilder">The <see cref="IConfigurationBuilder"/> to add to.</param>
-        /// <returns>The project path.</returns>
-        public static string GetProjectPath(this IConfigurationBuilder configurationBuilder)
-        {
-            if (configurationBuilder == null)
-            {
-                throw new ArgumentNullException(nameof(configurationBuilder));
-            }
-
-            object projectPath;
-            if (configurationBuilder.Properties.TryGetValue(ProjectPathKey, out projectPath))
-            {
-                return (string)projectPath;
-            }
-
-#if NET451
-            var stringBasePath = AppDomain.CurrentDomain.GetData("APP_CONTEXT_BASE_DIRECTORY") as string ??
-                AppDomain.CurrentDomain.BaseDirectory ??
-                string.Empty;
-
-            return Path.GetFullPath(stringBasePath);
-#else
-            return AppContext.BaseDirectory ?? string.Empty;
-#endif
-        }
-
-        /// <summary>
-        /// Sets the project path.
-        /// </summary>
-        /// <param name="builder">The <see cref="IConfigurationBuilder"/> to add to.</param>
-        /// <param name="projectPath">The absolute path of file-based providers.</param>
-        /// <returns>The <see cref="IConfigurationBuilder"/>.</returns>
-        public static IConfigurationBuilder SetProjectPath(this IConfigurationBuilder builder, string projectPath)
-        {
-            if (builder == null)
-            {
-                throw new ArgumentNullException(nameof(builder));
-            }
-
-            if (projectPath == null)
-            {
-                throw new ArgumentNullException(nameof(projectPath));
-            }
-
-            builder.Properties[ProjectPathKey] = projectPath;
-            return builder;
-        }
 
         /// <summary>
         /// Adds the user secrets configuration source.
@@ -76,15 +24,9 @@ namespace Microsoft.Extensions.Configuration
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            var projectPath = configuration.GetProjectPath();
-            if (string.IsNullOrEmpty(projectPath))
-            {
-                throw new InvalidOperationException(Resources.FormatError_MissingBasePath(
-                        projectPath,
-                        typeof(IConfigurationBuilder).Name,
-                        ProjectPathKey));
-            }
-            return AddSecretsFile(configuration, PathHelper.GetSecretsPath(projectPath));
+            var fileProvider = configuration.GetFileProvider();
+
+            return AddSecretsFile(configuration, PathHelper.GetSecretsPath(fileProvider));
         }
 
         /// <summary>

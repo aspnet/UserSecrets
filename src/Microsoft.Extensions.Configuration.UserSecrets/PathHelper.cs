@@ -3,6 +3,8 @@
 
 using System;
 using System.IO;
+using Microsoft.Extensions.FileProviders;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Extensions.Configuration.UserSecrets
@@ -10,6 +12,39 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
     public class PathHelper
     {
         internal const string Secrets_File_Name = "secrets.json";
+        internal const string Config_File_Name = "project.json";
+
+        public static string GetSecretsPath(IFileProvider provider)
+        {
+            if (provider == null)
+            {
+                throw new ArgumentNullException(nameof(provider));
+            }
+
+            var fileInfo = provider.GetFileInfo(Config_File_Name);
+            if (fileInfo == null || !fileInfo.Exists || string.IsNullOrEmpty(fileInfo.PhysicalPath))
+            {
+                throw new InvalidOperationException(
+                    string.Format(Resources.Error_Missing_Project_Json, provider.GetFileInfo("/")?.PhysicalPath ?? "unknown"));
+            }
+
+            using (var stream = fileInfo.CreateReadStream())
+            using (var streamReader = new StreamReader(stream))
+            using (var jsonReader = new JsonTextReader(streamReader))
+            {
+                var obj = JObject.Load(jsonReader);
+
+                var userSecretsId = obj.Value<string>("userSecretsId");
+
+                if (string.IsNullOrEmpty(userSecretsId))
+                {
+                    throw new InvalidOperationException(
+                        string.Format(Resources.Error_Missing_UserSecretId_In_Project_Json, fileInfo.Name));
+                }
+
+                return GetSecretsPathFromSecretsId(userSecretsId);
+            }
+        }
 
         public static string GetSecretsPath(string projectPath)
         {
@@ -18,24 +53,10 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
                 throw new ArgumentNullException(nameof(projectPath));
             }
 
-            var projectFilePath = Path.Combine(projectPath, "project.json");
-
-            if (!File.Exists(projectFilePath))
+            using (var provider = new PhysicalFileProvider(projectPath))
             {
-                throw new InvalidOperationException(
-                    string.Format(Resources.Error_Missing_Project_Json, projectFilePath));
+                return GetSecretsPath(provider);
             }
-
-            var obj = JObject.Parse(File.ReadAllText(projectFilePath));
-            var userSecretsId = obj.Value<string>("userSecretsId");
-
-            if (string.IsNullOrEmpty(userSecretsId))
-            {
-                throw new InvalidOperationException(
-                    string.Format(Resources.Error_Missing_UserSecretId_In_Project_Json, projectFilePath));
-            }
-
-            return GetSecretsPathFromSecretsId(userSecretsId);
         }
 
         public static string GetSecretsPathFromSecretsId(string userSecretsId)
