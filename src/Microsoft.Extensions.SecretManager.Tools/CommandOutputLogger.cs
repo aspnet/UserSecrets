@@ -5,7 +5,7 @@ using System;
 using Microsoft.Extensions.CommandLineUtils;
 using Microsoft.Extensions.Logging;
 
-namespace Microsoft.Extensions.SecretManager
+namespace Microsoft.Extensions.SecretManager.Tools
 {
     /// <summary>
     /// Logger to print formatted command output.

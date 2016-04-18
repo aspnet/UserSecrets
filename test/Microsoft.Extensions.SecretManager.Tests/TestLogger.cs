@@ -3,8 +3,9 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.SecretManager.Tools;
 
 namespace Microsoft.Extensions.SecretManager.Tests
 {

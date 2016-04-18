@@ -10,7 +10,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.PlatformAbstractions;
 using Newtonsoft.Json.Linq;
 
-namespace Microsoft.Extensions.SecretManager
+namespace Microsoft.Extensions.SecretManager.Tools
 {
     public class Program
     {
@@ -52,7 +52,7 @@ namespace Microsoft.Extensions.SecretManager
                 _loggerProvider = value;
             }
         }
-        
+
         public static int Main(string[] args)
         {
             return new Program(PlatformServices.Default.Runtime).Run(args);

@@ -1,6 +1,7 @@
 {
   "version": "1.0.0-*",
   "compilationOptions": {
+    "outputName": "dotnet-user-secrets",
     "emitEntryPoint": true,
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
