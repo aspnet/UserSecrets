@@ -4,7 +4,7 @@
             "AdxVerificationCompositeRule"
         ],
         "packages": {
-            "dotnet-user-secrets": { },
+            "Microsoft.Extensions.SecretManager.Tools": { },
             "Microsoft.Extensions.Configuration.UserSecrets": { }
         }
     },

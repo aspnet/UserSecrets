@@ -4,8 +4,8 @@
 using System;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.PlatformAbstractions;
-using Microsoft.Extensions.SecretManager;
 using Microsoft.Extensions.SecretManager.Tests;
+using Microsoft.Extensions.SecretManager.Tools;
 using Xunit;
 
 namespace Microsoft.Extensions.Configuration.UserSecrets.Tests

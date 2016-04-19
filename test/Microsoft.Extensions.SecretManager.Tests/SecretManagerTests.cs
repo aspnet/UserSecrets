@@ -4,8 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.Extensions.SecretManager.Tools;
 using Xunit;
 
 namespace Microsoft.Extensions.SecretManager.Tests
