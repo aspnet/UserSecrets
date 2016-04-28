@@ -17,10 +17,10 @@ namespace Microsoft.Extensions.SecretManager.Tools
         private ILogger _logger;
         private CommandOutputProvider _loggerProvider;
 
-        public Program(IRuntimeEnvironment runtimeEnv)
+        public Program()
         {
             var loggerFactory = new LoggerFactory();
-            CommandOutputProvider = new CommandOutputProvider(runtimeEnv);
+            CommandOutputProvider = new CommandOutputProvider();
             loggerFactory.AddProvider(CommandOutputProvider);
             Logger = loggerFactory.CreateLogger<Program>();
         }
@@ -55,7 +55,7 @@ namespace Microsoft.Extensions.SecretManager.Tools
 
         public static int Main(string[] args)
         {
-            return new Program(PlatformServices.Default.Runtime).Run(args);
+            return new Program().Run(args);
         }
 
         public int Run(string[] args)
