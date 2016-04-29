@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Microsoft.Extensions.Configuration.UserSecrets;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.SecretManager.Tools;
 using Xunit;
 
@@ -13,13 +12,6 @@ namespace Microsoft.Extensions.SecretManager.Tests
 {
     public class SecretManagerTests
     {
-        private readonly IRuntimeEnvironment _runtimeEnv;
-
-        public SecretManagerTests()
-        {
-            _runtimeEnv = PlatformServices.Default.Runtime;
-        }
-
         [Fact]
         public void SetSecret_With_ProjectPath_As_CommandLine_Parameter()
         {
@@ -58,8 +50,8 @@ namespace Microsoft.Extensions.SecretManager.Tests
                 Directory.SetCurrentDirectory(projectPath);         // Point current directory to the project.json directory.
             }
 
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
 
             foreach (var secret in secrets)
             {
@@ -115,8 +107,8 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void SetSecret_Update_Existing_Secret()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
 
             secretManager.Run(new string[] { "set", "secret1", "value1", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
@@ -138,8 +130,8 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void SetSecret_With_Verbose_Flag()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var logger = new TestLogger(_runtimeEnv, debug: true);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger(debug: true);
+            var secretManager = new Program() { Logger = logger };
 
             secretManager.Run(new string[] { "-v", "set", "secret1", "value1", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
@@ -161,8 +153,8 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void Remove_Non_Existing_Secret()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
             secretManager.Run(new string[] { "remove", "secret1", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains("Cannot find 'secret1' in the secret store.", logger.Messages);
@@ -172,8 +164,8 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void List_Empty_Secrets_File()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
             secretManager.Run(new string[] { "list", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains(Resources.Error_No_Secrets_Found, logger.Messages);
@@ -199,8 +191,8 @@ namespace Microsoft.Extensions.SecretManager.Tests
                 Directory.SetCurrentDirectory(projectPath);         // Point current directory to the project.json directory.
             }
 
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
 
             var secrets = new KeyValuePair<string, string>[]
                         {

@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.SecretManager.Tools;
 
 namespace Microsoft.Extensions.SecretManager.Tests
@@ -13,9 +12,9 @@ namespace Microsoft.Extensions.SecretManager.Tests
     {
         private readonly CommandOutputLogger _commandOutputLogger;
 
-        public TestLogger(IRuntimeEnvironment runtimeEnv, bool debug = false)
+        public TestLogger(bool debug = false)
         {
-            var commandOutputProvider = new CommandOutputProvider(runtimeEnv);
+            var commandOutputProvider = new CommandOutputProvider();
             if (debug)
             {
                 commandOutputProvider.LogLevel = LogLevel.Debug;

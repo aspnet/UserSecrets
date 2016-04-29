@@ -1,24 +1,17 @@
 // Copyright (c) .NET Foundation. All rights reserved.
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.PlatformAbstractions;
 
 namespace Microsoft.Extensions.SecretManager.Tools
 {
     public class CommandOutputProvider : ILoggerProvider
     {
-        private readonly bool _isWindows;
-
-        public CommandOutputProvider(IRuntimeEnvironment runtimeEnv)
-        {
-            _isWindows = runtimeEnv.OperatingSystem == "Windows";
-        }
-
         public ILogger CreateLogger(string name)
         {
-            return new CommandOutputLogger(this, useConsoleColor: _isWindows);
+            var useConsoleColor = PlatformServices.Default.Runtime.OperatingSystemPlatform == Platform.Windows;
+            return new CommandOutputLogger(this, useConsoleColor);
         }
 
         public void Dispose()

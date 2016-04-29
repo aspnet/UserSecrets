@@ -2,8 +2,6 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.Extensions.SecretManager.Tests;
 using Microsoft.Extensions.SecretManager.Tools;
 using Xunit;
@@ -12,12 +10,6 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 {
     public class ConfigurationExtensionTests
     {
-        private readonly IRuntimeEnvironment _runtimeEnv;
-
-        public ConfigurationExtensionTests()
-        {
-            _runtimeEnv = PlatformServices.Default.Runtime;
-        }
 
         [Fact]
         public void AddUserSecrets_Does_Not_Fail_On_Non_Existing_File_Explicitly_Passed()
@@ -44,8 +36,8 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             string userSecretsId;
             var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
 
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
 
             secretManager.Run(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
@@ -63,8 +55,8 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             string userSecretsId;
             var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
 
-            var logger = new TestLogger(_runtimeEnv);
-            var secretManager = new Program(_runtimeEnv) { Logger = logger };
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
 
             secretManager.Run(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
 
