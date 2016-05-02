@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-*",
-  "compilationOptions": {
+  "buildOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
     "nowarn": [
@@ -9,14 +9,16 @@
     "xmlDoc": true
   },
   "description": "User secrets configuration provider implementation for Microsoft.Extensions.Configuration.",
-  "tags": [
-    "configuration",
-    "secrets",
-    "usersecrets"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/aspnet/usersecrets"
+  "packOptions": {
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/aspnet/usersecrets"
+    },
+    "tags": [
+      "configuration",
+      "secrets",
+      "usersecrets"
+    ]
   },
   "dependencies": {
     "Microsoft.Extensions.Configuration.Json": "1.0.0-*"

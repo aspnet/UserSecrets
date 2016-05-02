@@ -1,6 +1,6 @@
 {
   "version": "1.0.0-*",
-  "compilationOptions": {
+  "buildOptions": {
     "outputName": "dotnet-user-secrets",
     "emitEntryPoint": true,
     "warningsAsErrors": true,
@@ -8,17 +8,24 @@
     "nowarn": [
       "CS1591"
     ],
-    "xmlDoc": true
+    "xmlDoc": true,
+    "embed": {
+      "mappings": {
+        "Microsoft.Extensions.SecretManager.Resources": "Resources.resx"
+      }
+    }
   },
   "description": "Command line tool to manage user secrets for Microsoft.Extensions.Configuration.",
-  "tags": [
-    "configuration",
-    "secrets",
-    "usersecrets"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/aspnet/usersecrets"
+  "packOptions": {
+    "repository": {
+      "type": "git",
+      "url": "git://github.com/aspnet/usersecrets"
+    },
+    "tags": [
+      "configuration",
+      "secrets",
+      "usersecrets"
+    ]
   },
   "dependencies": {
     "Microsoft.Extensions.Configuration.UserSecrets": "1.0.0-*",
@@ -31,7 +38,7 @@
   "frameworks": {
     "netcoreapp1.0": {
       "dependencies": {
-        "Microsoft.NETCore.App":{
+        "Microsoft.NETCore.App": {
           "version": "1.0.0-*",
           "type": "platform"
         }
@@ -40,8 +47,5 @@
         "portable-net451+win8"
       ]
     }
-  },
-  "namedResource": {
-    "Microsoft.Extensions.SecretManager.Resources": "Resources.resx"
   }
 }
