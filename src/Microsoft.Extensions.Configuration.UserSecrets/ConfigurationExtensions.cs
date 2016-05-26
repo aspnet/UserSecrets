@@ -53,14 +53,10 @@ namespace Microsoft.Extensions.Configuration
         private static IConfigurationBuilder AddSecretsFile(IConfigurationBuilder configuration, string secretPath)
         {
             var directoryPath = Path.GetDirectoryName(secretPath);
-            return configuration.AddJsonFile(source => {
-                source.Path = PathHelper.Secrets_File_Name;
-                if (Directory.Exists(directoryPath))
-                {
-                    source.FileProvider = new PhysicalFileProvider(directoryPath);
-                }
-                source.Optional = true;
-            });
+            var fileProvider = Directory.Exists(directoryPath) 
+                ? new PhysicalFileProvider(directoryPath) 
+                : null;
+            return configuration.AddJsonFile(fileProvider, PathHelper.Secrets_File_Name, optional: true, reloadOnChange: false);
         }
     }
 }
