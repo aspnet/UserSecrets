@@ -42,10 +42,7 @@
           "version": "1.0.0-*",
           "type": "platform"
         }
-      },
-      "imports": [
-        "portable-net451+win8"
-      ]
+      }
     }
   }
 }
