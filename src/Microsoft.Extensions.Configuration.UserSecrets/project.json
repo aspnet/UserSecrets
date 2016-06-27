@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0-rtm-*",
+  "version": "1.0.0",
   "buildOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
@@ -21,11 +21,10 @@
     ]
   },
   "dependencies": {
-    "Microsoft.Extensions.Configuration.Json": "1.0.0-*"
+    "Microsoft.Extensions.Configuration.Json": "1.0.0"
   },
   "frameworks": {
     "net451": {},
-    "netstandard1.3": {
-    }
+    "netstandard1.3": {}
   }
 }
