@@ -8,7 +8,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace Microsoft.Extensions.Configuration
 {
-    public static class ConfigurationExtensions
+    public static partial class ConfigurationExtensions
     {
         private const string Secrets_File_Name = "secrets.json";
 
