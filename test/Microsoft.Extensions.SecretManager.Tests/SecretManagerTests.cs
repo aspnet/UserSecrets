@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.SecretManager.Tools;
 using Xunit;
@@ -158,6 +159,63 @@ namespace Microsoft.Extensions.SecretManager.Tests
             secretManager.Run(new string[] { "remove", "secret1", "-p", projectPath });
             Assert.Equal(1, logger.Messages.Count);
             Assert.Contains("Cannot find 'secret1' in the secret store.", logger.Messages);
+        }
+
+        [Fact]
+        public void Remove_Is_Case_Insensitive()
+        {
+            var projectPath = UserSecretHelper.GetTempSecretProject();
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
+            secretManager.Run(new string[] { "set", "SeCreT1", "value", "-p", projectPath });
+            secretManager.Run(new string[] { "list", "-p", projectPath });
+            Assert.Contains("SeCreT1 = value", logger.Messages);
+            secretManager.Run(new string[] { "remove", "secret1", "-p", projectPath });
+            Assert.Equal(2, logger.Messages.Count);
+            logger.Messages.Clear();
+            secretManager.Run(new string[] { "list", "-p", projectPath });
+            Assert.Contains(Resources.Error_No_Secrets_Found, logger.Messages);
+
+            UserSecretHelper.DeleteTempSecretProject(projectPath);
+        }
+
+        [Fact]
+        public void List_Flattens_Nested_Objects()
+        {
+            var projectPath = UserSecretHelper.GetTempSecretProject();
+            var secretsFile = PathHelper.GetSecretsPath(projectPath);
+            Directory.CreateDirectory(Path.GetDirectoryName(secretsFile));
+            File.WriteAllText(secretsFile, @"{ ""AzureAd"": { ""ClientSecret"": ""abcdéƒ©˙î""} }", Encoding.UTF8);
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
+            secretManager.Run(new string[] { "list", "-p", projectPath });
+            Assert.Equal(1, logger.Messages.Count);
+            Assert.Contains("AzureAd:ClientSecret = abcdéƒ©˙î", logger.Messages);
+
+            UserSecretHelper.DeleteTempSecretProject(projectPath);
+        }
+
+        [Fact]
+        public void Set_Flattens_Nested_Objects()
+        {
+            var projectPath = UserSecretHelper.GetTempSecretProject();
+            var secretsFile = PathHelper.GetSecretsPath(projectPath);
+            Directory.CreateDirectory(Path.GetDirectoryName(secretsFile));
+            File.WriteAllText(secretsFile, @"{ ""AzureAd"": { ""ClientSecret"": ""abcdéƒ©˙î""} }", Encoding.UTF8);
+            var logger = new TestLogger();
+            var secretManager = new Program() { Logger = logger };
+            secretManager.Run(new string[] { "set", "AzureAd:ClientSecret", "¡™£¢∞", "-p", projectPath });
+            Assert.Equal(1, logger.Messages.Count);
+            secretManager.Run(new string[] { "list", "-p", projectPath });
+            Assert.Equal(2, logger.Messages.Count);
+            Assert.Contains("AzureAd:ClientSecret = ¡™£¢∞", logger.Messages);
+            var fileContents = File.ReadAllText(secretsFile, Encoding.UTF8);
+            Assert.Equal(@"{
+    ""AzureAd:ClientSecret"": ""¡™£¢∞""
+}",
+            fileContents, ignoreLineEndingDifferences: true, ignoreWhiteSpaceDifferences: true);
+
+            UserSecretHelper.DeleteTempSecretProject(projectPath);
         }
 
         [Fact]

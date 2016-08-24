@@ -2,9 +2,13 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Text;
 using Microsoft.Extensions.CommandLineUtils;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json.Linq;
@@ -116,7 +120,7 @@ namespace Microsoft.Extensions.SecretManager.Tools
 
                         ProcessSecretFile(projectPath, secrets =>
                         {
-                            if (secrets[keyArg.Value] == null)
+                            if (!secrets.ContainsKey(keyArg.Value))
                             {
                                 Logger.LogWarning(Resources.Error_Missing_Secret, keyArg.Value);
                             }
@@ -205,7 +209,7 @@ namespace Microsoft.Extensions.SecretManager.Tools
             return versionAttribute;
         }
 
-        private void PrintAll(JObject secrets)
+        private void PrintAll(IDictionary<string, string> secrets)
         {
             if (secrets.Count == 0)
             {
@@ -220,20 +224,23 @@ namespace Microsoft.Extensions.SecretManager.Tools
             }
         }
 
-        private void ProcessSecretFile(string projectPath, Action<JObject> observer, bool persist = true)
+        private void ProcessSecretFile(string projectPath, Action<IDictionary<string,string>> observer, bool persist = true)
         {
             Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
             var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
             Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
-            var secretObj = File.Exists(secretsFilePath) ?
-                            JObject.Parse(File.ReadAllText(secretsFilePath)) :
-                            new JObject();
-
-            observer(secretObj);
+            var secrets = new ConfigurationBuilder()
+                .AddJsonFile(secretsFilePath, optional: true)
+                .Build()
+                .AsEnumerable()
+                .Where(i => i.Value != null)
+                .ToDictionary(i => i.Key, i => i.Value, StringComparer.OrdinalIgnoreCase);
+           
+            observer(secrets);
 
             if (persist)
             {
-                WriteSecretsFile(secretsFilePath, secretObj);
+                WriteSecretsFile(secretsFilePath, secrets);
             }
         }
 
@@ -243,13 +250,23 @@ namespace Microsoft.Extensions.SecretManager.Tools
             var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
             Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
 
-            WriteSecretsFile(secretsFilePath, new JObject());
+            WriteSecretsFile(secretsFilePath, secrets: null);
         }
 
-        private static void WriteSecretsFile(string secretsFilePath, JObject contents)
+        private static void WriteSecretsFile(string secretsFilePath, IDictionary<string, string> secrets)
         {
             Directory.CreateDirectory(Path.GetDirectoryName(secretsFilePath));
-            File.WriteAllText(secretsFilePath, contents.ToString());
+
+            var contents = new JObject();
+            if (secrets != null)
+            {
+                foreach (var secret in secrets.AsEnumerable())
+                {
+                    contents[secret.Key] = secret.Value;
+                }
+            }
+
+            File.WriteAllText(secretsFilePath, contents.ToString(), Encoding.UTF8);
         }
     }
 }
