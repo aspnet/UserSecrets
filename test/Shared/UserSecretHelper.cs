@@ -5,9 +5,9 @@ using System;
 using System.IO;
 using Newtonsoft.Json;
 
-namespace Microsoft.Extensions.SecretManager.Tests
+namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 {
-    public class UserSecretHelper
+    internal class UserSecretHelper
     {
         internal static string GetTempSecretProject()
         {
@@ -17,11 +17,11 @@ namespace Microsoft.Extensions.SecretManager.Tests
 
         internal static string GetTempSecretProject(out string userSecretsId)
         {
-            var projectPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString()));
+            var projectPath = Directory.CreateDirectory(Path.Combine(Path.GetTempPath(), "usersecretstest", Guid.NewGuid().ToString()));
             userSecretsId = Guid.NewGuid().ToString();
             File.WriteAllText(
                 Path.Combine(projectPath.FullName, "project.json"),
-                string.Format("{{\"userSecretsId\": {0}}}", JsonConvert.ToString(userSecretsId)));
+                JsonConvert.SerializeObject(new { userSecretsId }));
             return projectPath.FullName;
         }
 
@@ -29,7 +29,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
         {
             File.WriteAllText(
                 Path.Combine(projectPath, "project.json"),
-                string.Format("{{\"userSecretsId\": {0}}}", JsonConvert.ToString(userSecretsId)));
+                JsonConvert.SerializeObject(new { userSecretsId }));
         }
 
         internal static void DeleteTempSecretProject(string projectPath)

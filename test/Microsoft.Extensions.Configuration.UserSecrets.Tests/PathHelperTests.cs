@@ -3,10 +3,9 @@
 
 using System;
 using System.IO;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Xunit;
 
-namespace Microsoft.Extensions.SecretManager.Tests
+namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 {
     public class PathHelperTests
     {
@@ -20,7 +19,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
             var root = Environment.GetEnvironmentVariable("APPDATA") ??         // On Windows it goes to %APPDATA%\Microsoft\UserSecrets\
                         Environment.GetEnvironmentVariable("HOME");             // On Mac/Linux it goes to ~/.microsoft/usersecrets/
 
-            var expectedSecretPath = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPDATA"))?
+            var expectedSecretPath = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPDATA")) ?
                 Path.Combine(root, "Microsoft", "UserSecrets", userSecretsId, "secrets.json") :
                 Path.Combine(root, ".microsoft", "usersecrets", userSecretsId, "secrets.json");
 
@@ -70,7 +69,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
                     PathHelper.GetSecretsPath(projectPath);
                 });
             }
-            
+
             UserSecretHelper.DeleteTempSecretProject(projectPath);
         }
     }

@@ -224,18 +224,25 @@ namespace Microsoft.Extensions.SecretManager.Tools
             }
         }
 
-        private void ProcessSecretFile(string projectPath, Action<IDictionary<string,string>> observer, bool persist = true)
+        private void ProcessSecretFile(string projectPath, Action<IDictionary<string, string>> observer, bool persist = true)
         {
             Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
             var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
             Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
+
+            {
+                // workaround https://github.com/aspnet/Configuration/issues/478
+                // TODO remove when tool upgrades to use 1.1.0
+                Directory.CreateDirectory(Path.GetDirectoryName(secretsFilePath));
+            }
+
             var secrets = new ConfigurationBuilder()
-                .AddJsonFile(secretsFilePath, optional: true)
+                .AddJsonFile(secretsFilePath, optional: true, reloadOnChange: false)
                 .Build()
                 .AsEnumerable()
                 .Where(i => i.Value != null)
                 .ToDictionary(i => i.Key, i => i.Value, StringComparer.OrdinalIgnoreCase);
-           
+
             observer(secrets);
 
             if (persist)

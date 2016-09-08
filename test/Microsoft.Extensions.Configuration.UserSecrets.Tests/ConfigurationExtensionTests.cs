@@ -2,14 +2,42 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Microsoft.Extensions.SecretManager.Tests;
-using Microsoft.Extensions.SecretManager.Tools;
+using System.Linq;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json.Linq;
 using Xunit;
 
 namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 {
     public class ConfigurationExtensionTests
     {
+        private void SetSecret(string id, string key, string value)
+        {
+            var secretsFilePath = PathHelper.GetSecretsPathFromSecretsId(id);
+            var secrets = new ConfigurationBuilder()
+                .AddJsonFile(secretsFilePath, optional: true)
+                .Build()
+                .AsEnumerable()
+                .Where(i => i.Value != null)
+                .ToDictionary(i => i.Key, i => i.Value, StringComparer.OrdinalIgnoreCase);
+
+            secrets[key] = value;
+
+            Directory.CreateDirectory(Path.GetDirectoryName(secretsFilePath));
+
+            var contents = new JObject();
+            if (secrets != null)
+            {
+                foreach (var secret in secrets.AsEnumerable())
+                {
+                    contents[secret.Key] = secret.Value;
+                }
+            }
+
+            File.WriteAllText(secretsFilePath, contents.ToString(), Encoding.UTF8);
+        }
+
 
         [Fact]
         public void AddUserSecrets_Does_Not_Fail_On_Non_Existing_File_Explicitly_Passed()
@@ -36,10 +64,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             string userSecretsId;
             var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
 
-            var logger = new TestLogger();
-            var secretManager = new Program() { Logger = logger };
-
-            secretManager.Run(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
+            SetSecret(userSecretsId, "Facebook:AppSecret", "value1");
 
             var builder = new ConfigurationBuilder().SetBasePath(projectPath).AddUserSecrets();
 
@@ -55,10 +80,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             string userSecretsId;
             var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
 
-            var logger = new TestLogger();
-            var secretManager = new Program() { Logger = logger };
-
-            secretManager.Run(new string[] { "set", "Facebook:AppSecret", "value1", "-p", projectPath });
+            SetSecret(userSecretsId, "Facebook:AppSecret", "value1");
 
             var builder = new ConfigurationBuilder()
                                 .AddUserSecrets(userSecretsId: userSecretsId);
