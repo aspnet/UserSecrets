@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Microsoft.Extensions.Configuration.UserSecrets;
+using Microsoft.Extensions.Configuration.UserSecrets.Tests;
 using Microsoft.Extensions.SecretManager.Tools;
 using Xunit;
 

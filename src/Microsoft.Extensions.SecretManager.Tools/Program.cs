@@ -224,18 +224,18 @@ namespace Microsoft.Extensions.SecretManager.Tools
             }
         }
 
-        private void ProcessSecretFile(string projectPath, Action<IDictionary<string,string>> observer, bool persist = true)
+        private void ProcessSecretFile(string projectPath, Action<IDictionary<string, string>> observer, bool persist = true)
         {
             Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
             var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
             Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
             var secrets = new ConfigurationBuilder()
-                .AddJsonFile(secretsFilePath, optional: true)
+                .AddJsonFile(secretsFilePath, optional: true, reloadOnChange: false)
                 .Build()
                 .AsEnumerable()
                 .Where(i => i.Value != null)
                 .ToDictionary(i => i.Key, i => i.Value, StringComparer.OrdinalIgnoreCase);
-           
+
             observer(secrets);
 
             if (persist)

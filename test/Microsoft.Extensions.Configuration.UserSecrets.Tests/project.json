@@ -1,0 +1,25 @@
+{
+  "buildOptions": {
+    "warningsAsErrors": true,
+    "keyFile": "../../tools/Key.snk",
+    "compile": {
+      "include": "../Shared/*.cs"
+    }
+  },
+  "dependencies": {
+    "dotnet-test-xunit": "2.2.0-*",
+    "Microsoft.Extensions.Configuration.UserSecrets": "1.1.0-*",
+    "xunit": "2.2.0-*"
+  },
+  "testRunner": "xunit",
+  "frameworks": {
+    "netcoreapp1.0": {
+      "dependencies": {
+        "Microsoft.NETCore.App": {
+          "version": "1.0.0-*",
+          "type": "platform"
+        }
+      }
+    }
+  }
+}
