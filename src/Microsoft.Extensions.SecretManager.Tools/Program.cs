@@ -227,7 +227,7 @@ namespace Microsoft.Extensions.SecretManager.Tools
         private void ProcessSecretFile(string projectPath, Action<IDictionary<string, string>> observer, bool persist = true)
         {
             Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
-            var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
+            var secretsFilePath = PathHelper.GetSecretsPath(projectPath, "project.json");
             Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
             var secrets = new ConfigurationBuilder()
                 .AddJsonFile(secretsFilePath, optional: true, reloadOnChange: false)
@@ -247,7 +247,7 @@ namespace Microsoft.Extensions.SecretManager.Tools
         private void ClearSecretFile(string projectPath)
         {
             Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
-            var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
+            var secretsFilePath = PathHelper.GetSecretsPath(projectPath, "project.json");
             Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
 
             WriteSecretsFile(secretsFilePath, secrets: null);

@@ -138,14 +138,14 @@ namespace Microsoft.Extensions.SecretManager.Tests
             secretManager.Run(new string[] { "-v", "set", "secret1", "value1", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
             Assert.Contains(string.Format("Project file path {0}.", projectPath), logger.Messages);
-            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath)), logger.Messages);
+            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath, "project.json")), logger.Messages);
             Assert.Contains("Successfully saved secret1 = value1 to the secret store.", logger.Messages);
             logger.Messages.Clear();
 
             secretManager.Run(new string[] { "-v", "list", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
             Assert.Contains(string.Format("Project file path {0}.", projectPath), logger.Messages);
-            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath)), logger.Messages);
+            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath, "project.json")), logger.Messages);
             Assert.Contains("secret1 = value1", logger.Messages);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -184,7 +184,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void List_Flattens_Nested_Objects()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var secretsFile = PathHelper.GetSecretsPath(projectPath);
+            var secretsFile = PathHelper.GetSecretsPath(projectPath, "project.json");
             Directory.CreateDirectory(Path.GetDirectoryName(secretsFile));
             File.WriteAllText(secretsFile, @"{ ""AzureAd"": { ""ClientSecret"": ""abcdéƒ©˙î""} }", Encoding.UTF8);
             var logger = new TestLogger();
@@ -200,7 +200,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
         public void Set_Flattens_Nested_Objects()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
-            var secretsFile = PathHelper.GetSecretsPath(projectPath);
+            var secretsFile = PathHelper.GetSecretsPath(projectPath, "project.json");
             Directory.CreateDirectory(Path.GetDirectoryName(secretsFile));
             File.WriteAllText(secretsFile, @"{ ""AzureAd"": { ""ClientSecret"": ""abcdéƒ©˙î""} }", Encoding.UTF8);
             var logger = new TestLogger();
