@@ -18,7 +18,10 @@
       "configuration",
       "secrets",
       "usersecrets"
-    ]
+    ],
+    "files": {
+      "include": "build/**/*"
+    }
   },
   "dependencies": {
     "Microsoft.Extensions.Configuration.Json": "1.1.0-*"
