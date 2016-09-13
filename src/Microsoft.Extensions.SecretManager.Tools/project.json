@@ -27,7 +27,10 @@
       "version": "1.0.0",
       "target": "package"
     },
-    "Microsoft.Extensions.CommandLineUtils": "1.0.0",
+    "Microsoft.Extensions.CommandLineUtils.Sources": {
+      "type": "build",
+      "version": "1.1.0-*"
+    },
     "Microsoft.Extensions.Logging": "1.0.0",
     "Newtonsoft.Json": "9.0.1",
     "System.Runtime.InteropServices.RuntimeInformation": "4.0.0",
