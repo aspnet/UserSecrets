@@ -58,6 +58,22 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
             return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_UserSecretId_In_Json"), p0);
         }
 
+        /// <summary>
+        /// This platform cannot identify the entry assembly. Use the overload .AddUserSecrets(System.Reflection.Assembly) instead.
+        /// </summary>
+        internal static string Error_EntryAssembly_NotAvailable
+        {
+            get { return GetString("Error_EntryAssembly_NotAvailable"); }
+        }
+
+        /// <summary>
+        /// This platform cannot identify the entry assembly. Use the overload .AddUserSecrets(System.Reflection.Assembly) instead.
+        /// </summary>
+        internal static string FormatError_EntryAssembly_NotAvailable()
+        {
+            return GetString("Error_EntryAssembly_NotAvailable");
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

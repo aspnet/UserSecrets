@@ -126,4 +126,7 @@
   <data name="Error_Missing_UserSecretId_In_Json" xml:space="preserve">
     <value>Missing 'userSecretsId' in '{0}'.</value>
   </data>
+  <data name="Error_EntryAssembly_NotAvailable">
+    <value>This platform cannot identify the entry assembly. Use the overload .AddUserSecrets(System.Reflection.Assembly) instead.</value>
+  </data>
 </root>

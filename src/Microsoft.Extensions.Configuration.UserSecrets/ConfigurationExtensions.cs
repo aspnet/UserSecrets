@@ -15,12 +15,17 @@ namespace Microsoft.Extensions.Configuration
     /// </summary>
     public static class ConfigurationExtensions
     {
-#if NET451 || NETSTANDARD1_5
         /// <summary>
         /// Adds the user secrets configuration source.
         /// </summary>
+        /// <exception cref="System.PlatformNotSupportedException">
+        /// Platforms that do not support System.Reflection.Assembly.GetEntryAssembly()
+        /// </exception>
         /// <param name="configuration"></param>
         /// <returns></returns>
+#if NETSTANDARD1_3
+        [Obsolete("This method will always throw on this platform. Use the AddUserSecrets(System.Reflection.Assembly) overload instead.")]
+#endif
         public static IConfigurationBuilder AddUserSecrets(this IConfigurationBuilder configuration)
         {
             if (configuration == null)
@@ -28,9 +33,15 @@ namespace Microsoft.Extensions.Configuration
                 throw new ArgumentNullException(nameof(configuration));
             }
 
+#if NETSTANDARD1_3
+            // this was added because the 1.0, netstandard1.3 version shipped with this API
+            // but did not need to use GetEntryAssembly (netstandard1.5 and up).
+            throw new PlatformNotSupportedException(Resources.Error_EntryAssembly_NotAvailable);
+#else
+            // Assembly.GetEntryAssembly requires netstandard1.5 or desktop .NET
             return AddUserSecrets(configuration, Assembly.GetEntryAssembly());
-        }
 #endif
+        }
 
         /// <summary>
         /// Adds the user secrets configuration source.
