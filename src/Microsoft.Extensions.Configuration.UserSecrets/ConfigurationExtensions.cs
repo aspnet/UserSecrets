@@ -66,7 +66,7 @@ namespace Microsoft.Extensions.Configuration
         /// Adds the user secrets configuration source.
         /// </summary>
         /// <param name="configuration"></param>
-        /// <param name="assembly">The assembly with the <see cref="UserSecrets.UserSecretsIdentifierFileNameAttribute" /></param>
+        /// <param name="assembly">The assembly with the <see cref="UserSecretsIdentifierFileNameAttribute" /></param>
         /// <returns></returns>
         public static IConfigurationBuilder AddUserSecrets(this IConfigurationBuilder configuration, Assembly assembly)
         {

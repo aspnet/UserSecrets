@@ -59,7 +59,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
         }
 
         /// <summary>
-        /// This platform cannot identify the entry assembly. Use the overload .AddUserSecrets(System.Reflection.Assembly) instead.
+        /// This platform cannot identify the entry assembly.
         /// </summary>
         internal static string Error_EntryAssembly_NotAvailable
         {
@@ -67,7 +67,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
         }
 
         /// <summary>
-        /// This platform cannot identify the entry assembly. Use the overload .AddUserSecrets(System.Reflection.Assembly) instead.
+        /// This platform cannot identify the entry assembly.
         /// </summary>
         internal static string FormatError_EntryAssembly_NotAvailable()
         {

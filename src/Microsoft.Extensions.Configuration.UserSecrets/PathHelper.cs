@@ -18,17 +18,27 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
     {
         internal const string Secrets_File_Name = "secrets.json";
 
-#if NET451 || NETSTANDARD1_5
         /// <summary>
-        /// Gets the path to the secrets file. Uses the <paramref name="provider" /> and <seealso cref="Assembly.GetEntryAssembly" /> to find the user secrets id.
+        /// Gets the path to the secrets file. Uses the <paramref name="provider" /> and the entry assembly to find the user secrets id.
         /// </summary>
+        /// <exception cref="System.PlatformNotSupportedException">
+        /// Platforms that do not support System.Reflection.Assembly.GetEntryAssembly()
+        /// </exception>
         /// <param name="provider">The file provider</param>
         /// <returns>The filepath to secrets file</returns>
+#if NETSTANDARD1_3
+        [Obsolete("This method will always throw on this platform. Use PathHelper.GetSecretsPath(IFileProvider provider, string identifierFileName) method instead.")]
+#endif
         public static string GetSecretsPath(IFileProvider provider)
         {
+#if NETSTANDARD1_3
+            // this was added because the 1.0, netstandard1.3 version shipped with this API
+            // but did not need to use GetEntryAssembly (netstandard1.5 and up).
+            throw new PlatformNotSupportedException(Resources.Error_EntryAssembly_NotAvailable);
+#else
             return GetSecretsPath(provider, Assembly.GetEntryAssembly().GetUserSecretsFileNameOrDefault());
-        }
 #endif
+        }
 
         /// <summary>
         /// Gets the path to the secrets file. If a directory is given, finds the user secrets id in the JSON named 'project.json'.

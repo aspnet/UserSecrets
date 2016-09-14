@@ -127,6 +127,6 @@
     <value>Missing 'userSecretsId' in '{0}'.</value>
   </data>
   <data name="Error_EntryAssembly_NotAvailable">
-    <value>This platform cannot identify the entry assembly. Use the overload .AddUserSecrets(System.Reflection.Assembly) instead.</value>
+    <value>This platform cannot identify the entry assembly.</value>
   </data>
 </root>
