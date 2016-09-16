@@ -22,12 +22,12 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
         /// Gets the path to the secrets file. Uses the <paramref name="provider" /> and the entry assembly to find the user secrets id.
         /// </summary>
         /// <exception cref="System.PlatformNotSupportedException">
-        /// Platforms that do not support System.Reflection.Assembly.GetEntryAssembly()
+        /// Platforms that do not support System.Reflection.Assembly.GetEntryAssembly().
         /// </exception>
         /// <param name="provider">The file provider</param>
         /// <returns>The filepath to secrets file</returns>
 #if NETSTANDARD1_3
-        [Obsolete("This method will always throw on this platform. Use PathHelper.GetSecretsPath(IFileProvider provider, string identifierFileName) method instead.")]
+        [Obsolete("This method is obsolete and will be removed in a future version. This method will always throw an exception on this platform. The recommended alternative is Microsoft.Extensions.Configuration.UserSecrets.PathHelper.GetSecretsPath(IFileProvider, string).")]
 #endif
         public static string GetSecretsPath(IFileProvider provider)
         {
@@ -41,12 +41,17 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
         }
 
         /// <summary>
-        /// Gets the path to the secrets file. If a directory is given, finds the user secrets id in the JSON named 'project.json'.
+        ///     <para>
+        ///     This method is obsolete and will be removed in a future version. The recommended alternative is Microsoft.Extensions.Configuration.UserSecrets.PathHelper.GetSecretsPath(string, string).
+        ///     </para>
+        ///     <para>
+        ///     Gets the path to the secrets file. If a directory is given, finds the user secrets id in the JSON named 'project.json'.
+        ///     </para>
         /// </summary>
         /// <param name="projectPath"></param>
         /// <returns>The filepath to secrets file</returns>
         // TODO remove in 2.0
-        [Obsolete("This API will be removed in future releases. Use PathHelper.GetSecretsPath(rootPath, identifierFileName) instead.")]
+        [Obsolete("This method is obsolete and will be removed in a future version. The recommended alternative is Microsoft.Extensions.Configuration.UserSecrets.PathHelper.GetSecretsPath(string, string).")]
         public static string GetSecretsPath(string projectPath)
         {
             if (projectPath == null)
@@ -135,10 +140,10 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
             }
 
             var fileInfo = provider.GetFileInfo(filename);
-            if (fileInfo == null || !fileInfo.Exists || string.IsNullOrEmpty(fileInfo.PhysicalPath))
+            if (fileInfo == null)
             {
                 var filePath = provider.GetFileInfo("/")?.PhysicalPath ?? "unknown";
-                throw new FileNotFoundException(string.Format(Resources.Error_Missing_Identifer_File, filePath), filePath);
+                throw new FileNotFoundException(string.Format(Resources.Error_Missing_Identifer_File, filePath), filename);
             }
 
             using (var stream = fileInfo.CreateReadStream())

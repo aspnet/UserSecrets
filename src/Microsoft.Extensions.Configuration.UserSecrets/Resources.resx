@@ -121,7 +121,7 @@
     <value>Invalid character '{0}' found in 'userSecretsId' value at index '{1}'.</value>
   </data>
   <data name="Error_Missing_Identifer_File" xml:space="preserve">
-    <value>Unable to locate load the user secrets identifier file '{0}'.</value>
+    <value>Unable to locate the user secrets identifier file '{0}'.</value>
   </data>
   <data name="Error_Missing_UserSecretId_In_Json" xml:space="preserve">
     <value>Missing 'userSecretsId' in '{0}'.</value>

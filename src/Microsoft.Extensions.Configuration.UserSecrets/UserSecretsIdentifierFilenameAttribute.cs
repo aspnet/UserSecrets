@@ -18,9 +18,6 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
     [AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
     public class UserSecretsIdentifierFileNameAttribute : Attribute
     {
-        // Set to project.json for maximum compatibility with 1.0.0
-        internal const string DefaultIdentifierFileName = "project.json";
-
         /// <summary>
         /// Initializes an instance of <see cref="UserSecretsIdentifierFileNameAttribute" />
         /// </summary>
@@ -31,9 +28,12 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
         }
 
         /// <summary>
-        /// The filename of the JSON file that stores the user secret id
+        /// The filename of the JSON file that stores the user secret id.
+        /// <remarks>
+        /// This can be null or empty. Callers should check the value before using.
+        /// </remarks>
         /// </summary>
-        /// <returns>The filename</returns>
-        public string FileName { get; } = DefaultIdentifierFileName;
+        /// <returns>The file name</returns>
+        public string FileName { get; set; }
     }
 }

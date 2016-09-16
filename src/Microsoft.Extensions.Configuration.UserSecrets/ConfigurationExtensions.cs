@@ -34,7 +34,7 @@ namespace Microsoft.Extensions.Configuration
             }
 
 #if NETSTANDARD1_3
-            // this was added because the 1.0, netstandard1.3 version shipped with this API
+            // this was added because the version 1.0.0, netstandard1.3 version shipped with this API
             // but did not need to use GetEntryAssembly (netstandard1.5 and up).
             throw new PlatformNotSupportedException(Resources.Error_EntryAssembly_NotAvailable);
 #else

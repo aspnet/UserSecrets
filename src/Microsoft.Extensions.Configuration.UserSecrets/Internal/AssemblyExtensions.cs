@@ -8,6 +8,9 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Internal
 {
     internal static class AssemblyExtensions
     {
+        // Set to project.json for maximum compatibility with 1.0.0
+        private const string DefaultIdentifierFileName = "project.json";
+
         public static string GetUserSecretsFileNameOrDefault(this Assembly assembly)
         {
             if (assembly == null)
@@ -16,7 +19,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Internal
             }
 
             return assembly.GetCustomAttribute<UserSecretsIdentifierFileNameAttribute>()?.FileName
-                ?? UserSecretsIdentifierFileNameAttribute.DefaultIdentifierFileName;
+                ?? DefaultIdentifierFileName;
         }
     }
 }
