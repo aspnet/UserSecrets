@@ -27,35 +27,51 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
         }
 
         /// <summary>
-        /// Unable to locate a project.json at '{0}'.
+        /// Unable to locate load the user secrets identifier file '{0}'.
         /// </summary>
-        internal static string Error_Missing_Project_Json
+        internal static string Error_Missing_Identifer_File
         {
-            get { return GetString("Error_Missing_Project_Json"); }
+            get { return GetString("Error_Missing_Identifer_File"); }
         }
 
         /// <summary>
-        /// Unable to locate a project.json at '{0}'.
+        /// Unable to locate load the user secrets identifier file '{0}'.
         /// </summary>
-        internal static string FormatError_Missing_Project_Json(object p0)
+        internal static string FormatError_Missing_Identifer_File(object p0)
         {
-            return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_Project_Json"), p0);
-        }
-
-        /// <summary>
-        /// Missing 'userSecretsId' in '{0}'.
-        /// </summary>
-        internal static string Error_Missing_UserSecretId_In_Project_Json
-        {
-            get { return GetString("Error_Missing_UserSecretId_In_Project_Json"); }
+            return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_Identifer_File"), p0);
         }
 
         /// <summary>
         /// Missing 'userSecretsId' in '{0}'.
         /// </summary>
-        internal static string FormatError_Missing_UserSecretId_In_Project_Json(object p0)
+        internal static string Error_Missing_UserSecretId_In_Json
         {
-            return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_UserSecretId_In_Project_Json"), p0);
+            get { return GetString("Error_Missing_UserSecretId_In_Json"); }
+        }
+
+        /// <summary>
+        /// Missing 'userSecretsId' in '{0}'.
+        /// </summary>
+        internal static string FormatError_Missing_UserSecretId_In_Json(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_UserSecretId_In_Json"), p0);
+        }
+
+        /// <summary>
+        /// This platform cannot identify the entry assembly.
+        /// </summary>
+        internal static string Error_EntryAssembly_NotAvailable
+        {
+            get { return GetString("Error_EntryAssembly_NotAvailable"); }
+        }
+
+        /// <summary>
+        /// This platform cannot identify the entry assembly.
+        /// </summary>
+        internal static string FormatError_EntryAssembly_NotAvailable()
+        {
+            return GetString("Error_EntryAssembly_NotAvailable");
         }
 
         private static string GetString(string name, params string[] formatterNames)

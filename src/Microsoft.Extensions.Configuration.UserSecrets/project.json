@@ -3,9 +3,6 @@
   "buildOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
-    "nowarn": [
-      "CS1591"
-    ],
     "xmlDoc": true
   },
   "description": "User secrets configuration provider implementation for Microsoft.Extensions.Configuration.",
@@ -25,6 +22,7 @@
   },
   "frameworks": {
     "net451": {},
-    "netstandard1.3": {}
+    "netstandard1.3": {},
+    "netstandard1.5": {}
   }
 }

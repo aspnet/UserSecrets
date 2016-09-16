@@ -14,7 +14,12 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
         {
             string userSecretsId;
             var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
+
+            // intentionally test obsolete API to ensure behavior still works
+            // TODO Remove in 2.0
+            #pragma warning disable CS0618
             var actualSecretPath = PathHelper.GetSecretsPath(projectPath);
+            #pragma warning restore CS0618
 
             var root = Environment.GetEnvironmentVariable("APPDATA") ??         // On Windows it goes to %APPDATA%\Microsoft\UserSecrets\
                         Environment.GetEnvironmentVariable("HOME");             // On Mac/Linux it goes to ~/.microsoft/usersecrets/
@@ -34,9 +39,9 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
             var projectPath = UserSecretHelper.GetTempSecretProject();
             File.Delete(Path.Combine(projectPath, "project.json"));
 
-            Assert.Throws<InvalidOperationException>(() =>
+            Assert.Throws<FileNotFoundException>(() =>
             {
-                PathHelper.GetSecretsPath(projectPath);
+                PathHelper.GetSecretsPath(projectPath, "project.json");
             });
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -50,7 +55,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
-                PathHelper.GetSecretsPath(projectPath);
+                PathHelper.GetSecretsPath(projectPath, "project.json");
             });
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -66,7 +71,7 @@ namespace Microsoft.Extensions.Configuration.UserSecrets.Tests
                 UserSecretHelper.SetTempSecretInProject(projectPath, "Test" + character);
                 Assert.Throws<InvalidOperationException>(() =>
                 {
-                    PathHelper.GetSecretsPath(projectPath);
+                    PathHelper.GetSecretsPath(projectPath, "project.json");
                 });
             }
 
