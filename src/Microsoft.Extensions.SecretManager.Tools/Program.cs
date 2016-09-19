@@ -2,15 +2,14 @@
 // Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using Microsoft.Extensions.CommandLineUtils;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration.UserSecrets;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders.Physical;
+using Microsoft.Extensions.SecretManager.Tools.Internal;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Microsoft.Extensions.SecretManager.Tools
@@ -19,9 +18,19 @@ namespace Microsoft.Extensions.SecretManager.Tools
     {
         private ILogger _logger;
         private CommandOutputProvider _loggerProvider;
+        private readonly TextWriter _consoleOutput;
+        private readonly string _workingDirectory;
 
         public Program()
+            : this(Console.Out, Directory.GetCurrentDirectory())
         {
+        }
+
+        internal Program(TextWriter consoleOutput, string workingDirectory)
+        {
+            _consoleOutput = consoleOutput;
+            _workingDirectory = workingDirectory;
+
             var loggerFactory = new LoggerFactory();
             CommandOutputProvider = new CommandOutputProvider();
             loggerFactory.AddProvider(CommandOutputProvider);
@@ -58,215 +67,117 @@ namespace Microsoft.Extensions.SecretManager.Tools
 
         public static int Main(string[] args)
         {
-            return new Program().Run(args);
+            HandleDebugFlag(ref args);
+
+            int rc;
+            new Program().TryRun(args, out rc);
+            return rc;
         }
 
-        public int Run(string[] args)
+        [Conditional("DEBUG")]
+        private static void HandleDebugFlag(ref string[] args)
+        {
+            for (var i = 0; i < args.Length; ++i)
+            {
+                if (args[i] == "--debug")
+                {
+                    Console.WriteLine("Process ID " + Process.GetCurrentProcess().Id);
+                    Console.WriteLine("Paused for debugger. Press ENTER to continue");
+                    Console.ReadLine();
+
+                    args = args.Take(i).Concat(args.Skip(i + 1)).ToArray();
+
+                    return;
+                }
+            }
+        }
+
+        public bool TryRun(string[] args, out int returnCode)
         {
             try
             {
-                var app = new CommandLineApplication();
-                app.Name = "dotnet-user-secrets";
-                app.Description = "Manages user secrets";
-                app.ShortVersionGetter = () => GetInformationalVersion();
-
-                app.HelpOption("-?|-h|--help");
-                var optVerbose = app.Option("-v|--verbose", "Verbose output", CommandOptionType.NoValue);
-
-                app.Command("set", c =>
-                {
-                    c.Description = "Sets the user secret to the specified value";
-
-                    var optionProject = c.Option("-p|--project <PATH>", "Path to project, default is current directory", CommandOptionType.SingleValue);
-                    var keyArg = c.Argument("[name]", "Name of the secret");
-                    var valueArg = c.Argument("[value]", "Value of the secret");
-                    c.HelpOption("-?|-h|--help");
-
-                    c.OnExecute(() =>
-                    {
-                        var projectPath = optionProject.Value() ?? Directory.GetCurrentDirectory();
-
-                        if (optVerbose.HasValue())
-                        {
-                            CommandOutputProvider.LogLevel = LogLevel.Debug;
-                        }
-
-                        ProcessSecretFile(projectPath, secrets =>
-                        {
-                            secrets[keyArg.Value] = valueArg.Value;
-                        });
-
-                        Logger.LogInformation(Resources.Message_Saved_Secret, keyArg.Value, valueArg.Value);
-                        return 0;
-                    });
-                });
-
-                app.Command("remove", c =>
-                {
-                    c.Description = "Removes the specified user secret";
-
-                    var optionProject = c.Option("-p|--project <PATH>", "Path to project, default is current directory", CommandOptionType.SingleValue);
-                    var keyArg = c.Argument("[name]", "Name of the secret");
-                    c.HelpOption("-?|-h|--help");
-
-                    c.OnExecute(() =>
-                    {
-                        var projectPath = optionProject.Value() ?? Directory.GetCurrentDirectory();
-
-                        if (optVerbose.HasValue())
-                        {
-                            CommandOutputProvider.LogLevel = LogLevel.Debug;
-                        }
-
-                        ProcessSecretFile(projectPath, secrets =>
-                        {
-                            if (!secrets.ContainsKey(keyArg.Value))
-                            {
-                                Logger.LogWarning(Resources.Error_Missing_Secret, keyArg.Value);
-                            }
-                            else
-                            {
-                                secrets.Remove(keyArg.Value);
-                            }
-                        });
-
-                        return 0;
-                    });
-                });
-
-                app.Command("list", c =>
-                {
-                    c.Description = "Lists all the application secrets";
-
-                    var optionProject = c.Option("-p|--project <PATH>", "Path to project, default is current directory", CommandOptionType.SingleValue);
-                    c.HelpOption("-?|-h|--help");
-
-                    c.OnExecute(() =>
-                    {
-                        var projectPath = optionProject.Value() ?? Directory.GetCurrentDirectory();
-
-                        if (optVerbose.HasValue())
-                        {
-                            CommandOutputProvider.LogLevel = LogLevel.Debug;
-                        }
-
-                        ProcessSecretFile(projectPath, secrets =>
-                        {
-                            PrintAll(secrets);
-                        },
-                        persist: false);
-                        return 0;
-                    });
-                });
-
-                app.Command("clear", c =>
-                {
-                    c.Description = "Deletes all the application secrets";
-
-                    var optionProject = c.Option("-p|--project <PATH>", "Path to project, default is current directory", CommandOptionType.SingleValue);
-                    c.HelpOption("-?|-h|--help");
-
-                    c.OnExecute(() =>
-                    {
-                        var projectPath = optionProject.Value() ?? Directory.GetCurrentDirectory();
-
-                        if (optVerbose.HasValue())
-                        {
-                            CommandOutputProvider.LogLevel = LogLevel.Debug;
-                        }
-
-                        ClearSecretFile(projectPath);
-
-                        return 0;
-                    });
-                });
-
-                // Show help information if no subcommand/option was specified.
-                app.OnExecute(() =>
-                {
-                    app.ShowHelp();
-                    return 2;
-                });
-
-                return app.Execute(args);
+                returnCode = RunInternal(args);
+                return true;
             }
             catch (Exception exception)
             {
-                Logger.LogCritical(Resources.Error_Command_Failed, exception.Message);
+                if (exception is GracefulException)
+                {
+                    Logger.LogError(exception.Message);
+                }
+                else
+                {
+                    Logger.LogDebug(exception.ToString());
+                    Logger.LogCritical(Resources.Error_Command_Failed, exception.Message);
+                }
+                returnCode = 1;
+                return false;
+            }
+        }
+
+        internal int RunInternal(params string[] args)
+        {
+            var options = CommandLineOptions.Parse(args, _consoleOutput);
+
+            if (options == null)
+            {
                 return 1;
             }
-        }
 
-        private static string GetInformationalVersion()
-        {
-            var assembly = typeof(Program).GetTypeInfo().Assembly;
-            var attribute = assembly.GetCustomAttribute<AssemblyInformationalVersionAttribute>();
-
-            var versionAttribute = attribute == null ?
-                assembly.GetName().Version.ToString() :
-                attribute.InformationalVersion;
-
-            return versionAttribute;
-        }
-
-        private void PrintAll(IDictionary<string, string> secrets)
-        {
-            if (secrets.Count == 0)
+            if (options.IsHelp)
             {
-                Logger.LogInformation(Resources.Error_No_Secrets_Found);
+                return 2;
             }
-            else
+
+            if (options.IsVerbose)
             {
-                foreach (var secret in secrets)
+                CommandOutputProvider.LogLevel = LogLevel.Debug;
+            }
+
+            var userSecretsId = ResolveUserSecretsId(options);
+            var store = new SecretsStore(userSecretsId, Logger);
+            options.Command.Execute(store, Logger);
+            return 0;
+        }
+
+        private string ResolveUserSecretsId(CommandLineOptions options)
+        {
+            var projectPath = options.Project ?? _workingDirectory;
+
+            if (!projectPath.EndsWith("project.json", StringComparison.OrdinalIgnoreCase))
+            {
+                projectPath = Path.Combine(projectPath, "project.json");
+            }
+
+            var fileInfo = new PhysicalFileInfo(new FileInfo(projectPath));
+
+            Logger.LogDebug(Resources.Message_Project_File_Path, fileInfo.PhysicalPath);
+            return ReadUserSecretsId(fileInfo);
+        }
+
+        // TODO can use runtime API when upgrading to 1.1
+        private string ReadUserSecretsId(IFileInfo fileInfo)
+        {
+            if (fileInfo == null || !fileInfo.Exists)
+            {
+                throw new GracefulException($"Could not find file '{fileInfo.PhysicalPath}'");
+            }
+
+            using (var stream = fileInfo.CreateReadStream())
+            using (var streamReader = new StreamReader(stream))
+            using (var jsonReader = new JsonTextReader(streamReader))
+            {
+                var obj = JObject.Load(jsonReader);
+
+                var userSecretsId = obj.Value<string>("userSecretsId");
+
+                if (string.IsNullOrEmpty(userSecretsId))
                 {
-                    Logger.LogInformation(Resources.FormatMessage_Secret_Value_Format(secret.Key, secret.Value));
+                    throw new GracefulException($"Could not find 'userSecretsId' in json file '{fileInfo.PhysicalPath}'");
                 }
+
+                return userSecretsId;
             }
-        }
-
-        private void ProcessSecretFile(string projectPath, Action<IDictionary<string, string>> observer, bool persist = true)
-        {
-            Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
-            var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
-            Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
-            var secrets = new ConfigurationBuilder()
-                .AddJsonFile(secretsFilePath, optional: true, reloadOnChange: false)
-                .Build()
-                .AsEnumerable()
-                .Where(i => i.Value != null)
-                .ToDictionary(i => i.Key, i => i.Value, StringComparer.OrdinalIgnoreCase);
-
-            observer(secrets);
-
-            if (persist)
-            {
-                WriteSecretsFile(secretsFilePath, secrets);
-            }
-        }
-
-        private void ClearSecretFile(string projectPath)
-        {
-            Logger.LogDebug(Resources.Message_Project_File_Path, projectPath);
-            var secretsFilePath = PathHelper.GetSecretsPath(projectPath);
-            Logger.LogDebug(Resources.Message_Secret_File_Path, secretsFilePath);
-
-            WriteSecretsFile(secretsFilePath, secrets: null);
-        }
-
-        private static void WriteSecretsFile(string secretsFilePath, IDictionary<string, string> secrets)
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(secretsFilePath));
-
-            var contents = new JObject();
-            if (secrets != null)
-            {
-                foreach (var secret in secrets.AsEnumerable())
-                {
-                    contents[secret.Key] = secret.Value;
-                }
-            }
-
-            File.WriteAllText(secretsFilePath, contents.ToString(), Encoding.UTF8);
         }
     }
 }

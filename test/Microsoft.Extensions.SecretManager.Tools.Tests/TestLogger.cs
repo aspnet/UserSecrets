@@ -4,23 +4,26 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.SecretManager.Tools;
+using Xunit.Abstractions;
 
-namespace Microsoft.Extensions.SecretManager.Tests
+namespace Microsoft.Extensions.SecretManager.Tools.Tests
 {
     public class TestLogger : ILogger
     {
-        private readonly CommandOutputLogger _commandOutputLogger;
+        private CommandOutputProvider _commandOutputProvider;
+        private readonly ILogger _wrapped;
+        private readonly ITestOutputHelper _output;
 
-        public TestLogger(bool debug = false)
+        public TestLogger(ITestOutputHelper output = null)
         {
-            var commandOutputProvider = new CommandOutputProvider();
-            if (debug)
-            {
-                commandOutputProvider.LogLevel = LogLevel.Debug;
-            }
+            _commandOutputProvider = new CommandOutputProvider();
+            _wrapped = _commandOutputProvider.CreateLogger("");
+            _output = output;
+        }
 
-            _commandOutputLogger = (CommandOutputLogger)commandOutputProvider.CreateLogger("");
+        public void SetLevel(LogLevel level)
+        {
+            _commandOutputProvider.LogLevel = LogLevel.Debug;
         }
 
         public List<string> Messages { get; set; } = new List<string>();
@@ -32,7 +35,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return _commandOutputLogger.IsEnabled(logLevel);
+            return _wrapped.IsEnabled(logLevel);
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
@@ -40,6 +43,7 @@ namespace Microsoft.Extensions.SecretManager.Tests
             if (IsEnabled(logLevel))
             {
                 Messages.Add(formatter(state, exception));
+                _output?.WriteLine(formatter(state, exception));
             }
         }
     }
