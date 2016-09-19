@@ -4,8 +4,7 @@
             "AdxVerificationCompositeRule"
         ],
         "packages": {
-            "Microsoft.Extensions.SecretManager.Tools": { },
-            "Microsoft.Extensions.Configuration.UserSecrets": { }
+            "Microsoft.Extensions.SecretManager.Tools": { }
         }
     },
     "Default": { // Rules to run for packages not listed in any other set.
