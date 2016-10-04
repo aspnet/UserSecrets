@@ -58,6 +58,22 @@ namespace Microsoft.Extensions.Configuration.UserSecrets
             return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_UserSecretId_In_Project_Json"), p0);
         }
 
+        /// <summary>
+        /// Could not find 'UserSecretsIdAttribute' on assembly '{0}'.
+        /// </summary>
+        internal static string Error_Missing_UserSecretsIdAttribute
+        {
+            get { return GetString("Error_Missing_UserSecretsIdAttribute"); }
+        }
+
+        /// <summary>
+        /// Could not find 'UserSecretsIdAttribute' on assembly '{0}'.
+        /// </summary>
+        internal static string FormatError_Missing_UserSecretsIdAttribute(object p0)
+        {
+            return string.Format(CultureInfo.CurrentCulture, GetString("Error_Missing_UserSecretsIdAttribute"), p0);
+        }
+
         private static string GetString(string name, params string[] formatterNames)
         {
             var value = _resourceManager.GetString(name);

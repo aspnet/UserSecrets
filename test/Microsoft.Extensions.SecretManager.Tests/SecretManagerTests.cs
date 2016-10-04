@@ -129,21 +129,22 @@ namespace Microsoft.Extensions.SecretManager.Tests
         [Fact]
         public void SetSecret_With_Verbose_Flag()
         {
-            var projectPath = UserSecretHelper.GetTempSecretProject();
+            string userSecretsId;
+            var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
             var logger = new TestLogger(debug: true);
             var secretManager = new Program() { Logger = logger };
 
             secretManager.Run(new string[] { "-v", "set", "secret1", "value1", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
             Assert.Contains(string.Format("Project file path {0}.", projectPath), logger.Messages);
-            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath)), logger.Messages);
+            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPathFromSecretsId(userSecretsId)), logger.Messages);
             Assert.Contains("Successfully saved secret1 = value1 to the secret store.", logger.Messages);
             logger.Messages.Clear();
 
             secretManager.Run(new string[] { "-v", "list", "-p", projectPath });
             Assert.Equal(3, logger.Messages.Count);
             Assert.Contains(string.Format("Project file path {0}.", projectPath), logger.Messages);
-            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPath(projectPath)), logger.Messages);
+            Assert.Contains(string.Format("Secrets file path {0}.", PathHelper.GetSecretsPathFromSecretsId(userSecretsId)), logger.Messages);
             Assert.Contains("secret1 = value1", logger.Messages);
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);

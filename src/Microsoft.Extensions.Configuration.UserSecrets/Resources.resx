@@ -126,4 +126,7 @@
   <data name="Error_Missing_UserSecretId_In_Project_Json" xml:space="preserve">
     <value>Missing 'userSecretsId' in '{0}'.</value>
   </data>
+  <data name="Error_Missing_UserSecretsIdAttribute" xml:space="preserve">
+    <value>Could not find 'UserSecretsIdAttribute' on assembly '{0}'.</value>
+  </data>
 </root>

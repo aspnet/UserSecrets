@@ -1,5 +1,5 @@
 {
-  "version": "1.0.0",
+  "version": "1.0.1",
   "buildOptions": {
     "warningsAsErrors": true,
     "keyFile": "../../tools/Key.snk",
@@ -18,13 +18,16 @@
       "configuration",
       "secrets",
       "usersecrets"
-    ]
+    ],
+    "files": {
+      "include": "build/**/*"
+    }
   },
   "dependencies": {
     "Microsoft.Extensions.Configuration.Json": "1.0.0"
   },
   "frameworks": {
     "net451": {},
-    "netstandard1.3": {}
+    "netstandard1.5": {}
   }
 }

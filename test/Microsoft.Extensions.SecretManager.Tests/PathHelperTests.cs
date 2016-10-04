@@ -15,12 +15,12 @@ namespace Microsoft.Extensions.SecretManager.Tests
         {
             string userSecretsId;
             var projectPath = UserSecretHelper.GetTempSecretProject(out userSecretsId);
-            var actualSecretPath = PathHelper.GetSecretsPath(projectPath);
+            var actualSecretPath = PathHelper.GetSecretsPathFromSecretsId(userSecretsId);
 
             var root = Environment.GetEnvironmentVariable("APPDATA") ??         // On Windows it goes to %APPDATA%\Microsoft\UserSecrets\
                         Environment.GetEnvironmentVariable("HOME");             // On Mac/Linux it goes to ~/.microsoft/usersecrets/
 
-            var expectedSecretPath = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPDATA"))?
+            var expectedSecretPath = !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("APPDATA")) ?
                 Path.Combine(root, "Microsoft", "UserSecrets", userSecretsId, "secrets.json") :
                 Path.Combine(root, ".microsoft", "usersecrets", userSecretsId, "secrets.json");
 
@@ -30,6 +30,22 @@ namespace Microsoft.Extensions.SecretManager.Tests
         }
 
         [Fact]
+        public void Throws_If_UserSecretId_Contains_Invalid_Characters()
+        {
+            foreach (var character in Path.GetInvalidPathChars())
+            {
+                var id = "Test" + character;
+                Assert.Throws<InvalidOperationException>(() =>
+                {
+                    PathHelper.GetSecretsPathFromSecretsId(id);
+                });
+            }
+        }
+
+        // TODO Remove in 2.0
+        #region LegacyBehavior
+
+        [Fact]
         public void Throws_If_Project_Json_Not_Found()
         {
             var projectPath = UserSecretHelper.GetTempSecretProject();
@@ -37,7 +53,9 @@ namespace Microsoft.Extensions.SecretManager.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
+#pragma warning disable CS0618
                 PathHelper.GetSecretsPath(projectPath);
+#pragma warning restore CS0618
             });
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
@@ -51,27 +69,14 @@ namespace Microsoft.Extensions.SecretManager.Tests
 
             Assert.Throws<InvalidOperationException>(() =>
             {
+#pragma warning disable CS0618
                 PathHelper.GetSecretsPath(projectPath);
+#pragma warning restore CS0618
             });
 
             UserSecretHelper.DeleteTempSecretProject(projectPath);
         }
 
-        [Fact]
-        public void Throws_If_UserSecretId_Contains_Invalid_Characters()
-        {
-            var projectPath = UserSecretHelper.GetTempSecretProject();
-
-            foreach (var character in Path.GetInvalidPathChars())
-            {
-                UserSecretHelper.SetTempSecretInProject(projectPath, "Test" + character);
-                Assert.Throws<InvalidOperationException>(() =>
-                {
-                    PathHelper.GetSecretsPath(projectPath);
-                });
-            }
-            
-            UserSecretHelper.DeleteTempSecretProject(projectPath);
-        }
+        #endregion
     }
 }
