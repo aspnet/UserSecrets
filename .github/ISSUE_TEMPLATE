@@ -1,0 +1,7 @@
+This repository has been deprecated.
+
+Use https://github.com/aspnet/Configuration
+for issues with Microsoft.Extensions.Configuration.UserSecrets.
+
+Use https://github.com/aspnet/DotNetTools
+for issues with Microsoft.Extensions.SecretManager.Tools.
